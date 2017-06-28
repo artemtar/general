@@ -8,4 +8,5 @@ int ITEMscan(Key *x){ return scanf("%d", x); }
 void ITEMshow(STitem item){
 printf("key = %d, info = ", key(item));
 puts(info(item));
+whater
 }
