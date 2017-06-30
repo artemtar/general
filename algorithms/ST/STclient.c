@@ -14,6 +14,8 @@ void main(int argc, char *argv[])
     STitem item;
     STinit(maxN);
     srand(2);
+    //creates table based on select. 
+    //0:Random, 1:Sorted, 2:Manual input
     for (i = 0; i < M; i++)
     {
         switch (sw)
