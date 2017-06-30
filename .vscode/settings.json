@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "stitem.h": "c"
+        "stitem.h": "c",
+        "stdlib.h": "c",
+        "st.h": "c"
     }
 }

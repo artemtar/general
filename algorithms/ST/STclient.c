@@ -1,11 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "STitem.h"
 #include "ST.h"
 
 STitem newItem = {300, "New Item"};
 int cnt1 = 0, cnt2 = 0;
+//creates information holder
+Key ITEMrand(void)
+{
+    return rand() % 1000;
+}
+//random key for reference
+int ITEMscan(Key *x) { return scanf("%d", x); }
+void ITEMshow(STitem item)
+{
+    printf("key = %d, info = ", key(item));
+    puts(info(item));    
+}
+
 void main(int argc, char *argv[])
 {
     int i, sKey, M = atoi(argv[1]), sw = atoi(argv[2]), maxN = M + 1;

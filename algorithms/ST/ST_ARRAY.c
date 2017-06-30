@@ -1,10 +1,9 @@
 #include <stdlib.h>
-#include "STitem.h"
+#include "ST.h"
 static STitem *st;
 static int N;
 extern int cnt1;
 extern int cnt2;
-extern STitem NULLitem;
 
 //allocate place to hold refferece(key) to each element
 void STinit(int maxN)
@@ -45,5 +44,7 @@ STitem STsearch(Key v)
         if (++cnt2 && less(v, key(st[j])))
             break;
     }
-    return NULLitem;
+    //defult empty element, assuming that none empty element have key reference greater than -1
+    STitem n = {-1, "NULL"};
+    return n;
 }
