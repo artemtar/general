@@ -8,13 +8,12 @@ STitem newItem = {300, "New Item"};
 int cnt1 = 0, cnt2 = 0;
 void main(int argc, char *argv[])
 {
-    int i, sKey, M = atoi(argv[1]), sw = atoi(argv[2]),
-                 int maxN = M + 1;
+    int i, sKey, M = atoi(argv[1]), sw = atoi(argv[2]), maxN = M + 1;
     Key v;
     STitem item;
     STinit(maxN);
     srand(2);
-    //creates table based on select. 
+    //creates table based on select.
     //0:Random, 1:Sorted, 2:Manual input
     for (i = 0; i < M; i++)
     {
@@ -27,9 +26,9 @@ void main(int argc, char *argv[])
             v = i + 1;
             break;
         default:
-            if (ITEMscan(&v) == EOF)00
+            if (ITEMscan(&v) == EOF)
                 break;
-        }
+        } //creating table, dependeng on chosen options
         key(item) = v;
         strcpy(info(item), "Hello");
         STinsert(item);
@@ -43,4 +42,4 @@ void main(int argc, char *argv[])
     printf("Input sKey: ");
     scanf("%d", &sKey);
     ITEMshow(STsearch(sKey));
-    pr
+}
