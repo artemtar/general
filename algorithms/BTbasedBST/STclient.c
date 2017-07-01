@@ -3,7 +3,6 @@
 #include <string.h>
 #include "BST_ST.h"
 
-
 STitem newItem = {300, "New Item"};
 int cnt1 = 0, cnt2 = 0;
 //creates information holder
@@ -16,7 +15,7 @@ int ITEMscan(Key *x) { return scanf("%d", x); }
 void ITEMshow(STitem item)
 {
     printf("key = %d, info = ", key(item));
-    puts(info(item)); 
+    puts(info(item));
 }
 
 void main(int argc, char *argv[])
