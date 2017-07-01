@@ -16,3 +16,4 @@ int ITEMscan(Key *);
 void STshow(void);
 STitem STsearch(Key );
 void STinsert(STitem x);
+int STcount(void);

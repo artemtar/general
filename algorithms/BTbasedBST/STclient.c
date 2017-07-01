@@ -17,7 +17,6 @@ void ITEMshow(STitem item)
 {
     printf("key = %d, info = ", key(item));
     puts(info(item)); 
-    return;   
 }
 
 void main(int argc, char *argv[])
@@ -25,7 +24,7 @@ void main(int argc, char *argv[])
     int i, sKey, M = atoi(argv[1]), sw = atoi(argv[2]), maxN = M + 1;
     Key v;
     STitem item;
-    STinit(maxN);
+    //STinit(maxN);
     srand(2);
     //creates table based on select.
     //0:Random, 1:Sorted, 2:Manual input
@@ -48,7 +47,7 @@ void main(int argc, char *argv[])
         STinsert(item);
     }
     printf("Original Symbol Table\n");
-    void showBST(link h);
+    STshow();
     printf("Length = %d, Keys = %d\n\n", M, STcount());
     STinsert(newItem);
     printf("After insertion\n");
