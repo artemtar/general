@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <STitem.h>
+#include "STitem.h"
 #include "ST.h"
 STitem NULLitem = {-1, "NULL"};
 

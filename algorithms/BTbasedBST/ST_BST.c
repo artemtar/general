@@ -27,7 +27,7 @@ link insertBST(link h, STitem x)
     (h->N)++;
     return h;
 }
-//all next such function declarations are compability function
+//all next function declarations are compability function
 //serves as extention of privious version which utilize array implementation
 void STinsert(STitem x) { head = insertBST(head, x); }
 //print graph
@@ -62,7 +62,7 @@ STitem searchBST(link h, Key v)
     else
         return searchBST(h->r, v);
 }
-///compability function
+///compatability function
 STitem STsearch(Key v) { return searchBST(head, v); }
 int STcount(void) { return head->N; }
 ///print item
