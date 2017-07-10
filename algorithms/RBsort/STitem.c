@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Item.h"
-
-Item NULLitem = {-1, "NULL"};
+#include <STitem.h>
+#include "ST.h"
+STitem NULLitem = {-1, "NULL"};
 
 Key ITEMrand(void) 
          { return rand()%1000; }
