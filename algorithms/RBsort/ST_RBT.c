@@ -49,55 +49,49 @@ void fixN(link h)
 link RBinsert(link h, STitem item, int sw)
 {
   Key v = key(item);
- // link hlr = hl->r;
- // link hrl = hr->l;
+ link hl = h->r;
+ link hr = h->l;
 
   //check correctness of red-black implementation
   //all conditions have to be satisfied
   if (h == pointNULL)
     return makeNEW(item, pointNULL, pointNULL, 1, 1);
-  link hl = h->l;
-  link hr = h->r;   
-  link hll = NULL;
-  link hrr = NULL;
-    if(hl != NULL) {link hll = hl->l;}
 
-  if(hr != NULL) {link hrr = hr->r;}
   //general case condition
-  if ((hl->red) && (hr->red))
+  if ((h->l->red) && (h->r->red))
   {
     h->red = 1;
-    hl->red = 0;
-    hr->red = 0;
+    h->l->red = 0;
+    h->r->red = 0;
   }
 
   if (less(v, key(h->item)))
   {        
 
-    hl = RBinsert(hl, item, 0);
+    h->l = RBinsert(h->l, item, 0);
     //red cant have red child, if so make rotation right    
-    if (h->red && hl->red && sw)
+    if (h->red && h->l->red && sw)
       h = rotR(h);
     //red cant have red uncle, if so make rotation right
-   if (hll!=NULL&&hl->red && hll->red)
+   if (h->l->l!=NULL&&h->l->red && h->l->l->red)
     {
       h = rotR(h);
       h->red = 0;
-      hr->red = 1;
+      h->r->red = 1;
     }
   }
   else
   {
-    hr = RBinsert(hr, item, 1);
+    h->r = RBinsert(h->r, item, 1);
     //check if previous cases hold after insertion        
-    printf("%dr\n", hrr);
-    if (h->red && hr->red && !sw)
+    //printf("%dr\n", hrr);
+    if (h->red && h->r->red && !sw)
       h = rotL(h);    
-    if (hrr!=NULL&&hr->red && hrr->red)
+    if (h->r->r!=NULL&&h->r->red && h->r->r->red)
     {
       h = rotL(h);
       h->red = 0;
-      hl->red = 1;
+      h->l->red = 1;
     }
   }
   fixN(h);
