@@ -12,7 +12,7 @@ void main(int argc, char *argv[])
   int i, sKey, M = atoi(argv[1]), sw = atoi(argv[2]), maxN = M + 1;
   Key v;
   STitem item;
-  STinit(maxN);
+  STinit();
 
   srand(2);
   for (i = 0; i < M; i++)

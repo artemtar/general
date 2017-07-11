@@ -1,8 +1,10 @@
-#include "ST.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "STitem.h"
+#include "ST.h"
 extern int cnt1;
 extern int cnt2;
-static link head, pointNULL; //header of the graph
+
 typedef struct STnode *link;
 struct STnode
 {
@@ -11,14 +13,10 @@ struct STnode
   int N;
   int red; // 0 is black and 1 is red
 };
+static link head, pointNULL; //header of the graph
 link makeNEW();
-void STinit();
-STitem STsearch();
-int STcount();
 void ITEMshows();
 void showBST();
-void STshow();
-void STinsert();
 //rotates three nodes of the graph when needed (right side rotation)
 link rotR(link h)
 {
@@ -51,17 +49,20 @@ void fixN(link h)
 link RBinsert(link h, STitem item, int sw)
 {
   Key v = key(item);
-  hl = h->l;
-  hr = h->r;
-  hll = hl->l;
-  hlr = hl->r;
-  hrl = hr->l;
-  hrr = hr->r;
+ // link hlr = hl->r;
+ // link hrl = hr->l;
 
   //check correctness of red-black implementation
   //all conditions have to be satisfied
   if (h == pointNULL)
     return makeNEW(item, pointNULL, pointNULL, 1, 1);
+  link hl = h->l;
+  link hr = h->r;   
+  link hll = NULL;
+  link hrr = NULL;
+    if(hl != NULL) {link hll = hl->l;}
+
+  if(hr != NULL) {link hrr = hr->r;}
   //general case condition
   if ((hl->red) && (hr->red))
   {
@@ -69,14 +70,16 @@ link RBinsert(link h, STitem item, int sw)
     hl->red = 0;
     hr->red = 0;
   }
+
   if (less(v, key(h->item)))
-  {
+  {        
+
     hl = RBinsert(hl, item, 0);
-    //red cant have red child, if so make rotation right
+    //red cant have red child, if so make rotation right    
     if (h->red && hl->red && sw)
       h = rotR(h);
     //red cant have red uncle, if so make rotation right
-    if (hl->red && hll->red)
+   if (hll!=NULL&&hl->red && hll->red)
     {
       h = rotR(h);
       h->red = 0;
@@ -86,10 +89,11 @@ link RBinsert(link h, STitem item, int sw)
   else
   {
     hr = RBinsert(hr, item, 1);
-    //chack if previous cases hold after insertion
+    //check if previous cases hold after insertion        
+    printf("%dr\n", hrr);
     if (h->red && hr->red && !sw)
-      h = rotL(h);
-    if (hr->red && hrr->red)
+      h = rotL(h);    
+    if (hrr!=NULL&&hr->red && hrr->red)
     {
       h = rotL(h);
       h->red = 0;
@@ -107,15 +111,13 @@ link makeNEW(STitem c, link left, link right, int num, int color)
     x->l = left;
     x->r = right;
     x->N = num;
-    red = color;
+    x->red = color;
     return x;
 }
 //creates default graph
 void STinit(){
  head = (pointNULL = makeNEW(NULLitem,NULL,NULL,0,0)); 
 }
-///compatability function
-STitem STsearch(Key v) { return searchBST(head, v); }
 //shows graph size
 int STcount(void) { return head->N; }
 ///print item
@@ -142,6 +144,8 @@ STitem searchBST(link h, Key v)
     else
         return searchBST(h->r, v);
 }
+///compatability function
+STitem STsearch(Key v) { return searchBST(head, v); }
 ///print graph
 void showBST(link h)
 {

@@ -4,6 +4,7 @@
 extern int cnt1;
 extern int cnt2;
 static link head, pointNULL; //header of the graph
+struct STnode { Item item; link l, r; int N; int red; };
 //creates new node to compose all info
 link makeNEW(STitem c, link left, link right, int num)
 {

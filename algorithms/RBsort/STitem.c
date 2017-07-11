@@ -8,7 +8,7 @@ Key ITEMrand(void)
          { return rand()%1000; }
 int ITEMscan(Key *x) 
          { return scanf("%d", x); } 
-void ITEMshow(Item item) 
+void ITEMshow(STitem item) 
          { printf("key = %d, info = ", key(item));
            puts(info(item));
          }
