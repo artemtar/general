@@ -8,6 +8,8 @@
         "bst_st.h": "c",
         "stdio2.h": "c",
         "heap.h": "c",
-        "libio.h": "c"
+        "libio.h": "c",
+        "string.h": "c",
+        "unistd.h": "c"
     }
 }

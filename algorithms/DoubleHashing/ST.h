@@ -1,4 +1,4 @@
-void STinit(void);
+void STinit(int);
 int STcount(void);
 void STinsert(STitem);
 STitem STsearch(Key);
