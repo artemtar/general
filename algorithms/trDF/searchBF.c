@@ -9,7 +9,7 @@ int goal;
 
 int searchBF(int start)
 {
-    QUEUEinit();
+    QUEUEinit(M);
 }
 void main(int argc, char *argv[])
 {

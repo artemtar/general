@@ -1,35 +1,27 @@
 #include <stdlib.h>
 #include "Item.h"
 #include "QUEUE.h"
-typedef struct QUEUEnode *link;
-struct QUEUEnode
+static Item *q;
+static int maxN, head, tail;
+void QUEUEinit(int n)
 {
-    Item item;
-    link next;
-};
-static link head, tail;
-
-void QUEUEinit(int maxN)
-{
-    head = NULL;
+    q = malloc((n + 1) * sizeof(Item));
+    maxN = n;
+    head = 0;
+    tail = 0;
 }
-Item QUEUEempty(void)
+int QUEUEempty(void)
 {
-    return head == NULL;
+    return head == tail;
 }
-Item QUEUEget(void)
+void QUEUEput(Item x)
 {
-    Item x = head->item;
-    link t = head->next;
-    free(head);
-    head = t;
-    return x;
+    q[tail++] = x;
+    tail = tail % (maxN + 1);
 }
 Item QUEUEget(void)
 {
-    Item x = head->item;
-    link t = head->next;
-    free(head);
-    head = t;
-    return x;
+    int res = q[head];
+    head = (head + 1) % (maxN + 1);
+    return res;
 }
