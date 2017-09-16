@@ -43,7 +43,9 @@ public class invertible_complex implements invertible{
 	      return C;
 	    }
 	  public void display(String  name){
-	      System.out.println("invertible_complex '" + name + "': " + val_x + "" + val_y);
+	      if(this.val_y > 0) System.out.println("invertible_complex '" + name + "': " + val_x + " + " + val_y + "i");
+	      if(this.val_y < 0) System.out.println("invertible_complex '" + name + "': " + val_x + " " + val_y + "i");
+	      if(this.val_y == 0) System.out.println("invertible_complex '" + name + "': " + val_x + " + "  + "0");
 	  }
 	  public double get_real(){
 		  return val_x;
