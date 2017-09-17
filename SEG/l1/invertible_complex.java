@@ -28,21 +28,17 @@ public class invertible_complex implements invertible{
 	        throw new ArithmeticException();
 	      }
 	      else {
-	        invertible_complex B = new invertible_complex();
-	        B.reset_2_zero();
-	        System.out.println(mod()+"qqqq");
-	        double den = Math.pow( this.mod(),2);
-	        B.val_x = this.get_real() / den;
-	        B.val_y = this.get_imag() / den;	        
-	        return B;
+	        double den = Math.pow(this.val_x, 2) + Math.pow(this.val_y, 2); 
+	        this.val_x = this.get_real() / den;
+	        this.val_y = this.get_imag() / den;	        
+	        return this;
 	      }
 	    }
-	    public invertible multiply_by(invertible B){
-	      invertible_complex C = new invertible_complex();
+	    public invertible_complex multiply_by(invertible B){
 	      invertible_complex b = (invertible_complex)B;
-	      C.val_x = this.get_real() * b.get_real() - this.get_imag() * b.get_imag();
-	      C.val_y = this.get_real() * b.get_imag() + this.get_imag() * b.get_real();
-	      return C;
+	      this.val_x = this.get_real() * b.get_real() - this.get_imag() * b.get_imag();
+	      this.val_y = this.get_real() * b.get_imag() + this.get_imag() * b.get_real();
+	      return this;
 	    }
 	  public void display(String  name){
 	      if(this.val_y > 0) System.out.println("invertible_complex '" + name + "': " + val_x + " + " + val_y + "i");
@@ -57,8 +53,7 @@ public class invertible_complex implements invertible{
 	  }
 	  
 	  public double mod() {
-	        if (val_x!=0 || val_y!=0) {
-	        	System.out.println("whateer" + (val_x*val_x+val_y*val_y));
+	        if (val_x!=0 || val_y!=0) {	        	
 	            return Math.sqrt(val_x*val_x+val_y*val_y);	            
 	        } else {
 	            return 0;

@@ -26,6 +26,7 @@ public class invertible_complex_test {
     solver s = new  solver(G, H);
     G.display("G");
     H.display("H");
-    System.out.println("Solution is: " + s.solve_for_x());   
+    System.out.println("Solution is: " );   
+    s.solve_for_x();
     
 }}
