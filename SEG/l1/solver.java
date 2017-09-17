@@ -3,7 +3,10 @@ package Lab1;
 public class solver {
 	private invertible A;
 	private invertible b;
-	private solver(){
+	
+	solver (invertible passedA, invertible passedB){
+		A = passedA;
+		b = passedB;
 		this.set_A();
 		this.set_b();
 	}

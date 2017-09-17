@@ -23,15 +23,17 @@ public class invertible_complex implements invertible{
 	        this.val_y = scanner.nextFloat();
 	        //scanner.close();
 	    }
-	    public invertible get_inverse() throws ArithmeticException { 
+	    public invertible_complex get_inverse() throws ArithmeticException { 
 	      if (this.val_x == 0 & this.val_y == 0) {
 	        throw new ArithmeticException();
 	      }
 	      else {
 	        invertible_complex B = new invertible_complex();
-	        double den = Math.pow( B.mod(),2);
-	        B.val_x = B.get_real() / den;
-	        B.val_y = B.get_imag() / den;	        
+	        B.reset_2_zero();
+	        System.out.println(mod()+"qqqq");
+	        double den = Math.pow( this.mod(),2);
+	        B.val_x = this.get_real() / den;
+	        B.val_y = this.get_imag() / den;	        
 	        return B;
 	      }
 	    }
@@ -56,7 +58,8 @@ public class invertible_complex implements invertible{
 	  
 	  public double mod() {
 	        if (val_x!=0 || val_y!=0) {
-	            return Math.sqrt(val_x*val_x+val_y*val_y);
+	        	System.out.println("whateer" + (val_x*val_x+val_y*val_y));
+	            return Math.sqrt(val_x*val_x+val_y*val_y);	            
 	        } else {
 	            return 0;
 	        }

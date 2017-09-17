@@ -15,10 +15,17 @@ public class invertible_complex_test {
     invertible_complex E = new invertible_complex();
     E.reset_2_zero();
     try {
-      invertible_float F = (invertible_float) E.get_inverse();
-      F.display("divideByZero");
-    } catch (Exception e) {
-        System.out.println("divideByZero");
-    }
-    System.out.println("done!");
+        invertible_complex F = (invertible_complex) E.get_inverse();
+        F.display("divideByZero");
+      } catch (Exception e) {
+          System.out.println("divideByZero");
+      }
+      System.out.println("done!");
+    invertible_complex G = new invertible_complex();
+    invertible_complex H = new invertible_complex();
+    solver s = new  solver(G, H);
+    G.display("G");
+    H.display("H");
+    System.out.println("Solution is: " + s.solve_for_x());   
+    
 }}
