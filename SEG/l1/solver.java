@@ -7,20 +7,25 @@ public class solver {
 	solver (invertible passedA, invertible passedB){
 		A = passedA;
 		b = passedB;
-		System.out.println("Set first number");
-		this.set_A();
-		System.out.println("Set second number");
-		this.set_b();
+
 	}
+	
 	public void set_A(){
 		A.init();
 	}
 	public void set_b(){
 		b.init();
 	}
-	public void solve_for_x(){
-		
+	
+	public void set_both(){
+		System.out.println("Set first number");
+		this.set_A();
+		System.out.println("Set second number");
+		this.set_b();
+	}
+	
+	public void solve_for_x(){	
 		 invertible_complex X = (invertible_complex) b.multiply_by(A.get_inverse());
-		 X.display("X");
+		 X.display("x");
 	}
 }

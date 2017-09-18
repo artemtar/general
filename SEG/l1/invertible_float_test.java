@@ -1,7 +1,7 @@
 package Lab1;
 
-public class invertible_float_test {
-    /*public static void main(String args[]) {
+public class invertible_float_test {/*
+    public static void main(String args[]) {
       invertible_float A = new invertible_float();
       A.randomize();
       A.display("A");

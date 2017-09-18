@@ -27,36 +27,31 @@ public class invertible_complex implements invertible{
 	      if (this.val_x == 0 & this.val_y == 0) {
 	        throw new ArithmeticException();
 	      }
-	      else {
+	      else {//looking for inverse
 	        double den = Math.pow(this.val_x, 2) + Math.pow(this.val_y, 2); 
-	        this.val_x = this.get_real() / den;
-	        this.val_y = this.get_imag() / den;	        
-	        return this;
+	        invertible_complex t = new invertible_complex();
+	        t.val_x = this.get_real() / den;
+	        t.val_y = -1 * this.get_imag() / den;	   	        
+	        return t;
 	      }
 	    }
-	    public invertible_complex multiply_by(invertible B){
+	    public invertible_complex multiply_by(invertible B){//standard formula for complex multiplication
 	      invertible_complex b = (invertible_complex)B;
-	      this.val_x = this.get_real() * b.get_real() - this.get_imag() * b.get_imag();
-	      this.val_y = this.get_real() * b.get_imag() + this.get_imag() * b.get_real();
-	      return this;
+	      invertible_complex t = new invertible_complex();
+	      t.val_x = this.get_real() * b.get_real() - this.get_imag() * b.get_imag();
+	      t.val_y = this.get_real() * b.get_imag() + this.get_imag() * b.get_real();	  	      
+	      return t;
 	    }
 	  public void display(String  name){
-	      if(this.val_y > 0) System.out.println("invertible_complex '" + name + "': " + val_x + " + " + val_y + "i");
-	      if(this.val_y < 0) System.out.println("invertible_complex '" + name + "': " + val_x + " " + val_y + "i");
-	      if(this.val_y == 0) System.out.println("invertible_complex '" + name + "': " + val_x + " + "  + "0");
+	      if(this.val_y > 0) System.out.println("" + name + " is: " + val_x + " + " + val_y + "i");
+	      if(this.val_y < 0) System.out.println("" + name + " is: " + val_x + " " + val_y + "i");
+	      if(this.val_y == 0) System.out.println("" + name + " is: " + val_x + " + "  + "0i");
 	  }
 	  public double get_real(){
 		  return val_x;
 	}
 	  public double get_imag (){
 		  return val_y;
-	  }
-	  
-	  public double mod() {
-	        if (val_x!=0 || val_y!=0) {	        	
-	            return Math.sqrt(val_x*val_x+val_y*val_y);	            
-	        } else {
-	            return 0;
-	        }
-	    }
+	  }	  
+
 }
