@@ -1,4 +1,4 @@
-package Lab1;
+package l1;
 
 public class invertible_float_test {/*
     public static void main(String args[]) {

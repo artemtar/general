@@ -1,4 +1,4 @@
-package Lab1;
+package l1;
 
 public class solver {
 	private invertible A;

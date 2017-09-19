@@ -1,0 +1,9 @@
+package l2;
+
+public class test {
+    public void main(final String ... $Args) {
+    	TCPServer.main($Args);
+    	String[] s = {"ser1","localhost"};
+    	//TCPClient.main(s);
+        //Client.main('client2.cfg');
+}

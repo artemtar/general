@@ -1,4 +1,4 @@
-package Lab1;
+package l1;
 
 public interface invertible {
 	public void init();
