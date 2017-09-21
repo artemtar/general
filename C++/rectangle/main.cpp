@@ -20,5 +20,6 @@ int main(){
     v = r1.split();
     for(int i = 0; i < 4; i++){
        ((Rectangle) v[i]).print();
+       cout << endl;
     }
 }

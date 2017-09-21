@@ -55,18 +55,19 @@ vector<Rectangle> Rectangle::split()
     cout << "Slit of ";
     print();
     cout << "is:" << endl;
-    
-    int mid_x = (d_x_end - d_x_start)/2;
-    int mid_y = (d_y_end - d_y_start)/2;
+    int len = d_x_end - d_x_start;
+    int wid = d_y_end - d_y_start;
+    int mid_x = (len)/2;
+    int mid_y = (wid)/2;
     Rectangle ll, lr, rl, rr;
     ll.setVal(d_x_start, d_y_start, d_x_start + mid_x, d_y_start + mid_y);    
-    lr.setVal(mid_x, d_y_start, d_x_end, mid_y);
-    rl.setVal(d_x_start, mid_y, mid_x, d_y_end);
-    rr.setVal(mid_x, mid_y, d_x_end, d_y_end);
+    lr.setVal(d_x_end + mid_x + len % 2, d_y_start, d_x_end, d_y_start + mid_y);
+    rl.setVal(d_x_start, mid_y + d_y_start + wid % 2, d_x_start + mid_x, d_y_end);
+    rr.setVal(d_x_start + mid_x + len % 2, d_y_start + mid_y + wid % 2, d_x_end, d_y_end);
     vector<Rectangle> v;
     v.push_back(ll);
     v.push_back(lr);
-    v.push_back(rl);
     v.push_back(rr);
+    v.push_back(rl);   
     return v;
 }
