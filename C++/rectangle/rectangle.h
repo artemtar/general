@@ -9,6 +9,9 @@ class Rectangle
   int d_x_end;
   int d_y_start;
   int d_y_end;
+  int len;
+  int wid;
+
 
 public:
   Rectangle(int xs = -1, int ys = -1, int w = 1, int h = 1);
