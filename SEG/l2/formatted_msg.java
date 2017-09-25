@@ -1,4 +1,4 @@
-
+package l2;
 import java.io.*;
 public class formatted_msg implements Serializable{
   public enum CTRL { NORMAL, TERMINATE, LOOPBACK, BROADCAST, SETUP, GET_ALL_CLIENTS};

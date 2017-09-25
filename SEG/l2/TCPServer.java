@@ -1,4 +1,4 @@
-
+package l2;
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -49,8 +49,10 @@ class Connection extends Thread {
 		} catch(IOException e) {System.out.println("Connection:"+e.getMessage());}
 	}
 	public void run(){
-    System.out.println("server thread started");
-		try {			                 // an echo server
+		System.out.println("server thread started");
+		while(true){
+		try {			                
+			 // an echo server
 
 			// String data = in.readUTF();	                  // read a line of data from the stream
 			// out.writeUTF(data);
@@ -58,7 +60,7 @@ class Connection extends Thread {
 			System.out.println("Reply: " + msg);
       out.writeObject(msg);  
       System.out.println("num connection " + all_connections.size());
-      Thread.sleep (5000);
+      Thread.sleep (50);
 		}catch (EOFException e){System.out.println("EOF:"+e.getMessage());
 		} catch(IOException e) {System.out.println("readline:"+e.getMessage());
 		} catch(ClassNotFoundException e) {System.out.println("readline:"+e.getMessage());
@@ -73,7 +75,7 @@ class Connection extends Thread {
           break;
         }
       }
-    }catch (IOException e){/*close failed*/}}
+    }catch (IOException e){/*close failed*/}}}
 		
 
 	}
