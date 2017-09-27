@@ -12,6 +12,7 @@
         "string.h": "c",
         "unistd.h": "c",
         "limits": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "iostream": "cpp"
     }
 }

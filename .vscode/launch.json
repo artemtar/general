@@ -5,7 +5,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/algorithms/BTbasedBST/a.out",
+            "program": "${workspaceRoot}/C++/oldstring/a.out",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
