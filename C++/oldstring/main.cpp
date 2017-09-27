@@ -16,7 +16,8 @@ int main()
         i = i + " " + input;
     }
     Oldstring olds (i);
-    //cout << i.mean() << endl;
+    char* n = olds.getPtr();
+    cout << "pointer" << n[1] << endl;
     
 
     cout << "The value you entered is " << i << endl;

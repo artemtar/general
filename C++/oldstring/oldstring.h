@@ -14,6 +14,7 @@ public:
     double stdDev(char* c, double d);
     string getWord(char* c);
     void getstat();
+    char* getPtr();
 };
 
 

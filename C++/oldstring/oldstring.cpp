@@ -35,10 +35,12 @@ double Oldstring::stdDev(char *c, double d)
 
 string Oldstring::getWord(char *c)
 {
+    cout << "run2" << *(c+2) << endl;
     string word = "";
     if (*c == '\0')
     {
         pos = -1;
+        return word;
     }
     while ((c[pos] == ' ') && (pos > 0))
     {
@@ -46,6 +48,7 @@ string Oldstring::getWord(char *c)
         if (c[pos] == '\0')
         {
             pos = -1;
+            return word;
         }
     }
 
@@ -56,7 +59,7 @@ string Oldstring::getWord(char *c)
         if (c[pos] == '\0')
         {
             pos = -1;
-            break;
+            return word;
         }
     }
 
@@ -65,9 +68,9 @@ string Oldstring::getWord(char *c)
 
 void Oldstring::getstat()
 {
-    while (pos != -1)
-    {
+        cout << "run" << endl;
         string w = getWord(p_str);
         cout << w << endl;
-    }
+    
 }
+char* Oldstring::getPtr(){return p_str;}
