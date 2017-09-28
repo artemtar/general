@@ -9,68 +9,88 @@ using namespace std;
 Oldstring::Oldstring(string s) : data(s)
 
 {
-    //const char *pS = s.c_str();
     p_str = new char[s.size() + 1];
     strcpy(p_str, s.c_str());
-    pos = 0;
-    //copy(s.begin, s.end, p_str);
-    //p_str[s.size()] = '\0';
+    pos = 1; //starts counting
 }
 
 double Oldstring::mean(char *c)
 {
-    int sum = 0;
-    while ((*c != ' ') || (*c != '\0'))
+    double sum = 0;
+    while ((*c != '\0'))
         sum += static_cast<int>(*(c++));
-
-    return sum / data.size();
+    return sum / pointedSize;
 }
 
 double Oldstring::stdDev(char *c, double d)
 {
-    double m = mean(c);
-    double dev = pow(m, 2);
-    return sqrt(dev / (data.size() - 1));
+    double var;
+    double s;
+    while ((*c != '\0'))
+    {
+        
+        var += pow(*c - d, 2);
+        c++;
+       
+    }
+    s = sqrt(var / (pointedSize - 1));
+    return s;
 }
 
 string Oldstring::getWord(char *c)
 {
-    cout << "run2" << *(c+2) << endl;
+
     string word = "";
-    if (*c == '\0')
+    if (*(p_str) == '\0')
     {
         pos = -1;
+        cout << "string is empty" << endl;
         return word;
     }
-    while ((c[pos] == ' ') && (pos > 0))
+    if (pos < 0)
+        return word;
+
+    while ((*c == ' ') && (pos > 0))
     {
+        c++; //haha
         pos++;
-        if (c[pos] == '\0')
+        if (*c == '\0')
         {
             pos = -1;
             return word;
         }
     }
-
-    while (*(c + pos) != ' ')
+    while (*c != ' ')
     {
-        word += *(c + pos);
+        word += *c;
+        c++;
         pos++;
-        if (c[pos] == '\0')
+        if (*c == '\0')
         {
             pos = -1;
             return word;
         }
     }
-
     return word;
 }
 
 void Oldstring::getstat()
 {
-        cout << "run" << endl;
-        string w = getWord(p_str);
-        cout << w << endl;
-    
+    char *pass;
+    while (pos < data.size()) //main loop for getting all calculation
+    {
+        string w = getWord(p_str + pos); //get next word
+        pointedSize = w.size();
+        pass = new char[w.size() + 1]; //temprely holder
+        strcpy(pass, w.c_str());
+        double m = mean(pass);
+        double dev = stdDev(pass, m);
+        cout << "Mean of " + w + ": " << m << endl;
+        cout << "Standard deviation of " + w + ": " << dev << endl;
+    }
+    delete[] pass;
+    delete_array(); // optional, not needed if you still need the array
 }
-char* Oldstring::getPtr(){return p_str;}
+char *Oldstring::getPtr() { return p_str + pos; }
+
+void Oldstring::delete_array() { delete[] p_str; }

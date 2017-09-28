@@ -12,15 +12,13 @@ int main()
         cout << "Input: ";
         cin >> input;
         if (input == "stop")
-        break;
+            break;
         i = i + " " + input;
     }
-    Oldstring olds (i);
-    char* n = olds.getPtr();
-    cout << "pointer" << n[1] << endl;
-    
-
+    Oldstring olds(i);
+    char *n = olds.getPtr();
+    bool q = n[0] == ' ';
     cout << "The value you entered is " << i << endl;
     olds.getstat();
     return 0;
-} 
+}
