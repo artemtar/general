@@ -36,3 +36,7 @@
 ehthumbs.db
 Thumbs.db
 /.metadata/
+App_data/*
+*.lock
+.metadata/.plugins/org.eclipse.core.resources/.history/b5/70bdcd17c19c00171594ac1d629bbeaf
+.metadata/.plugins/org.eclipse.core.resources/.history/df/b02c5c89c19c00171594ac1d629bbeaf
