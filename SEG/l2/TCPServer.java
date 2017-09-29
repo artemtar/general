@@ -1,82 +1,175 @@
 package l2;
+
 import java.net.*;
+import java.beans.Expression;
 import java.io.*;
 import java.util.*;
+import l2.formatted_msg.CTRL;
 
 public class TCPServer {
-	public static void main (String args[]) {
-		int serverPort = 7896; // the server port
-    List <Connection> all_connections = new ArrayList<Connection>();
-	   	try {
-	        InetAddress addr = InetAddress.getLocalHost();
-	    
-	        // Get IP Address
-	        byte[] ipAddr = addr.getAddress();
-	    
-	        // Get hostname
-	        String hostname = addr.getHostName();
-	        System.out.println("Server Name: " + hostname + "\nServer Port: " + serverPort);
-	    } catch (UnknownHostException e) {
-	    }
+	static ServerSocket listenSocket;
 
-		try{
-			ServerSocket listenSocket = new ServerSocket(serverPort);
+	public static void main(String args[]) {
+		int serverPort = 7896; // the server port
+		List<Connection> all_connections = new ArrayList<Connection>();
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+
+			// Get IP Address
+			byte[] ipAddr = addr.getAddress();
+
+			// Get hostname
+			String hostname = addr.getHostName();
+			System.out.println("Server Name: " + hostname + "\nServer Port: " + serverPort);
+		} catch (UnknownHostException e) {
+		}
+
+		try {
+			listenSocket = new ServerSocket(serverPort);
 			System.out.println("Server is Ready");
-			while(true) {
-        System.out.println("listening to client sockets");
+			while (true) {
+				System.out.println("listening to client sockets");
 				Socket clientSocket = listenSocket.accept();
-        System.out.println("connection found, creating a new connection thread");
+				System.out.println("connection found, creating a new connection thread");
 				Connection c = new Connection(clientSocket);
-        all_connections.add(c);
-        c.all_connections = all_connections;
+				all_connections.add(c);
+				System.out.println(c.getName() + "connnnnnnnection");
+				c.all_connections = all_connections;
 			}
-		} catch(IOException e) {while (true) System.out.println("IOException Listen socket:"+e.getMessage());}
+		} catch (IOException e) {
+			System.out.println("IOException Listen socket:" + e.getMessage());
+		}
 	}
 }
+
 class Connection extends Thread {
 	ObjectInputStream in;
 	ObjectOutputStream out;
 	Socket clientSocket;
-  String name;
-  List <Connection> all_connections;
-	public Connection (Socket aClientSocket) {
-    System.out.println("creating a new connection for client" );
+	String name;
+	List<Connection> all_connections;
+
+	public Connection(Socket aClientSocket) {
+		System.out.println("creating a new connection for client");
 		try {
 			clientSocket = aClientSocket;
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
 			this.start();
-		} catch(IOException e) {System.out.println("Connection:"+e.getMessage());}
+		} catch (IOException e) {
+			System.out.println("Connection:" + e.getMessage());
+		}
+
 	}
-	public void run(){
+
+	public void set_my_name(String s) {
+		name = s;
+	}
+
+	public String get_my_name() {
+		return name;
+	}
+
+	public ObjectInputStream get_in() {
+		return in;
+	}
+
+	public ObjectOutputStream get_out() {
+		return out;
+	}
+
+	public void run() {
 		System.out.println("server thread started");
-		while(true){
-		try {			                
-			 // an echo server
 
-			// String data = in.readUTF();	                  // read a line of data from the stream
-			// out.writeUTF(data);
-      formatted_msg msg = (formatted_msg) in.readObject();
-			System.out.println("Reply: " + msg);
-      out.writeObject(msg);  
-      System.out.println("num connection " + all_connections.size());
-      Thread.sleep (50);
-		}catch (EOFException e){System.out.println("EOF:"+e.getMessage());
-		} catch(IOException e) {System.out.println("readline:"+e.getMessage());
-		} catch(ClassNotFoundException e) {System.out.println("readline:"+e.getMessage());
-		}catch (InterruptedException e){System.out.println("readline:"+e.getMessage());
-		} finally{ try {
-      clientSocket.close();
-      for (int i=0; i< all_connections.size(); i++) {
-        if (this == (Connection) all_connections.get(i)) {
-          System.out.println("Removing connection from the list, for " + name);
-          System.out.println("num connection upon removing " + all_connections.size());
-          all_connections.remove(i);
-          break;
-        }
-      }
-    }catch (IOException e){/*close failed*/}}}
-		
+		try {
+			while (true) {
+				formatted_msg msg;
+				// an echo server
+
+				// String data = in.readUTF(); // read a line of data from the
+				// stream
+				// out.writeUTF(data);
+
+				msg = (formatted_msg) in.readObject();
+				CTRL mode = msg.get_ctrl();
+				switch (mode) {
+				case NORMAL:
+					System.out.println("This is message for " + msg.get_dest());
+					Connection c;
+					for (int i = 0; i < all_connections.size(); i++) {
+						c = all_connections.get(i);
+						// System.out.println("Check" + msg.get_dest() +
+						// c.get_my_name() + ((String)c.get_my_name() ==
+						// (String)msg.get_dest()));
+						if ((c.get_my_name().equals(msg.get_dest()))) {
+							ObjectOutputStream reciver = c.get_out();
+							reciver.writeObject(msg);
+						}
+					}
+					break;
+				case TERMINATE:
+					terminate();
+					break;
+				case LOOPBACK:
+					System.out.println("This is loop back: " + msg);
+					out.writeObject(msg);
+					break;
+				case BROADCAST:
+					System.out.println("This is Broadcast");
+					Connection b;
+					for (int i = 0; i < all_connections.size(); i++) {
+						b = all_connections.get(i);
+						ObjectOutputStream reciver = b.get_out();
+						reciver.writeObject(msg);
+					}
+					break;
+				case SETUP:
+					System.out.println("Connection with " + msg.get_dest() + " is established");
+					set_my_name(msg.get_dest());
+					break;
+				case GET_ALL_CLIENTS:
+					System.out.println("This is client check");
+					Connection a;
+					String clients = null;
+					for (int i = 0; i < all_connections.size(); i++) {
+						a = all_connections.get(i);
+						clients += a.get_my_name();
+					}
+					formatted_msg m = new formatted_msg(getName(), clients);
+					out.writeObject(m);
+					break;
+				}
+
+				System.out.println("num connection " + all_connections.size());
+				Thread.sleep(50);
+			}
+		} catch (EOFException e) {/*
+									 * System.out.println("EOF:"+e.getMessage())
+									 * ;
+									 */
+		} catch (IOException e) {
+			System.out.println("readline:" + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			System.out.println("readline:" + e.getMessage());
+		} catch (InterruptedException e) {
+			System.out.println("readline:" + e.getMessage());
+		}
 
 	}
+
+	public void terminate() {
+		try {
+			clientSocket.close();
+			for (int i = 0; i < all_connections.size(); i++) {
+				if (this == (Connection) all_connections.get(i)) {
+					System.out.println("Removing connection from the list, for " + name);
+					System.out.println("num connection upon removing " + all_connections.size());
+					all_connections.remove(i);
+					break;
+				}
+			}
+		} catch (IOException e) {
+		}
+	}
+
 }
