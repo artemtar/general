@@ -98,15 +98,16 @@ class Connection extends Thread {
 							flag = true;
 						}
 					}
+					// checking if connection exists
 					if (flag != true) {
-						formatted_msg sendBack = new formatted_msg("","Recipient does not exist");
+						formatted_msg sendBack = new formatted_msg("", "Recipient does not exist");
 						out.writeObject(sendBack);
 					}
 					break;
 				case TERMINATE:
 					msg.set_msg("Connection is terminated");
 					out.writeObject(msg);
-					Thread.sleep(50);
+					Thread.sleep(50);// waiting
 					terminate();
 					break;
 				case LOOPBACK:
@@ -144,10 +145,7 @@ class Connection extends Thread {
 				System.out.println("num connection " + all_connections.size());
 				Thread.sleep(50);
 			}
-		} catch (EOFException e) {/*
-									 * System.out.println("EOF:"+e.getMessage())
-									 * ;
-									 */
+		} catch (EOFException e) {
 		} catch (IOException e) {
 			System.out.println("readline:" + e.getMessage());
 		} catch (ClassNotFoundException e) {
