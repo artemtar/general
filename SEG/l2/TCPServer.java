@@ -33,7 +33,6 @@ public class TCPServer {
 				System.out.println("connection found, creating a new connection thread");
 				Connection c = new Connection(clientSocket);
 				all_connections.add(c);
-				System.out.println(c.getName() + "connnnnnnnection");
 				c.all_connections = all_connections;
 			}
 		} catch (IOException e) {
@@ -84,12 +83,6 @@ class Connection extends Thread {
 		try {
 			while (true) {
 				formatted_msg msg;
-				// an echo server
-
-				// String data = in.readUTF(); // read a line of data from the
-				// stream
-				// out.writeUTF(data);
-
 				msg = (formatted_msg) in.readObject();
 				CTRL mode = msg.get_ctrl();
 				switch (mode) {
@@ -98,9 +91,6 @@ class Connection extends Thread {
 					Connection c;
 					for (int i = 0; i < all_connections.size(); i++) {
 						c = all_connections.get(i);
-						// System.out.println("Check" + msg.get_dest() +
-						// c.get_my_name() + ((String)c.get_my_name() ==
-						// (String)msg.get_dest()));
 						if ((c.get_my_name().equals(msg.get_dest()))) {
 							ObjectOutputStream reciver = c.get_out();
 							reciver.writeObject(msg);
@@ -130,10 +120,11 @@ class Connection extends Thread {
 				case GET_ALL_CLIENTS:
 					System.out.println("This is client check");
 					Connection a;
-					String clients = null;
+					String clients = "";
 					for (int i = 0; i < all_connections.size(); i++) {
 						a = all_connections.get(i);
 						clients += a.get_my_name();
+						if(i != all_connections.size()+1) clients += ",";
 					}
 					formatted_msg m = new formatted_msg(getName(), clients);
 					out.writeObject(m);

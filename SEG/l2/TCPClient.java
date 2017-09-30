@@ -21,7 +21,7 @@ public class TCPClient {
 		int serverPort = 7896;
 		formatted_msg msg;
 		try {
-			//System.out.println(args[0] + " " + args[1] + " " + "wow");
+			// System.out.println(args[0] + " " + args[1] + " " + "wow");
 			System.out.println("starting a new client socket");
 			s = new Socket(args[1], serverPort);
 			out = new ObjectOutputStream(s.getOutputStream());
@@ -32,15 +32,22 @@ public class TCPClient {
 			msg.set_ctrl(ctrl);
 			out.writeObject(msg);
 
-			// testing loopback
+			// loopback testing connection
 			formatted_msg m2 = new formatted_msg(args[0], "it is LB");
 			m2.set_ctrl(formatted_msg.CTRL.LOOPBACK);
 			System.out.println("sending " + m2);
 			out.writeObject(m2);
-			
-			//testing normal
+			formatted_msg sMes;
+			try {
+				sMes = (formatted_msg) in.readObject();
+				System.out.println("Loopback is recived: " + sMes);
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+
+			// testing normal
 			formatted_msg m3 = new formatted_msg("", "");
-					m3 = formatted_msg.init(m3);
+			m3 = formatted_msg.init(m3);
 			out.writeObject(m3);
 
 			new Thread(new Runnable() {
@@ -48,8 +55,7 @@ public class TCPClient {
 					try {
 						while (true) {
 							formatted_msg serverMes = (formatted_msg) in.readObject();
-							// in.wait();
-							System.out.println("Received incide new thred: " + serverMes);
+							System.out.println("Received measage: " + serverMes);
 							Thread.sleep(50);
 						}
 					} catch (ClassNotFoundException e) {
@@ -74,26 +80,13 @@ public class TCPClient {
 			System.out.println("readline1:" + e.getMessage());
 		} catch (InterruptedException e) {
 			System.out.println("readline3:" + e.getMessage());
+		} finally {
+			if (s != null)
+				try {
+					s.close();
+				} catch (IOException e) {
+					System.out.println("close:" + e.getMessage());
+				}
 		}
-		// finally {if(s!=null)
-		// try {s.close();}catch (IOException
-		// e){System.out.println("close:"+e.getMessage());}
-
-		/*
-		 * 
-		 * while(true){ try { //s.setKeepAlive(true); //out = new
-		 * ObjectOutputStream(s.getOutputStream()); in = new ObjectInputStream(
-		 * s.getInputStream()); msg = (formatted_msg) in.readObject();
-		 * System.out.println("Received mmes: "+ msg) ; Thread.sleep (200);
-		 * }catch (IOException e){
-		 * //System.out.println("readline4:"+e.getMessage()); }catch
-		 * (InterruptedException
-		 * e){System.out.println("readline5:"+e.getMessage()); }catch
-		 * (ClassNotFoundException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 * 
-		 * }
-		 */
-
 	}
 }
