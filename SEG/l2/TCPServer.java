@@ -85,6 +85,7 @@ class Connection extends Thread {
 				formatted_msg msg;
 				msg = (formatted_msg) in.readObject();
 				CTRL mode = msg.get_ctrl();
+				boolean flag = false;// flag for checking if recipient exist
 				switch (mode) {
 				case NORMAL:
 					System.out.println("This is message for " + msg.get_dest());
@@ -94,10 +95,18 @@ class Connection extends Thread {
 						if ((c.get_my_name().equals(msg.get_dest()))) {
 							ObjectOutputStream reciver = c.get_out();
 							reciver.writeObject(msg);
+							flag = true;
 						}
+					}
+					if (flag != true) {
+						formatted_msg sendBack = new formatted_msg("","Recipient does not exist");
+						out.writeObject(sendBack);
 					}
 					break;
 				case TERMINATE:
+					msg.set_msg("Connection is terminated");
+					out.writeObject(msg);
+					Thread.sleep(50);
 					terminate();
 					break;
 				case LOOPBACK:
@@ -124,7 +133,8 @@ class Connection extends Thread {
 					for (int i = 0; i < all_connections.size(); i++) {
 						a = all_connections.get(i);
 						clients += a.get_my_name();
-						if(i != all_connections.size()+1) clients += ",";
+						if (i != all_connections.size() + 1)
+							clients += ",";
 					}
 					formatted_msg m = new formatted_msg(getName(), clients);
 					out.writeObject(m);
@@ -145,7 +155,6 @@ class Connection extends Thread {
 		} catch (InterruptedException e) {
 			System.out.println("readline:" + e.getMessage());
 		}
-
 	}
 
 	public void terminate() {

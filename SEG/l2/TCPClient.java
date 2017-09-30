@@ -8,7 +8,7 @@ import java.io.*;
 
 public class TCPClient {
 	public static void main(String args[]) {
-		// arguments supply message and hostname
+		// arguments supply message and host name
 		// Check command line
 		if (args.length < 2) {
 			System.err.println("Usage : ");
@@ -16,15 +16,13 @@ public class TCPClient {
 			System.exit(1);
 		}
 		Socket s = null;
-		ObjectOutputStream out = null;
-		// ObjectInputStream in;
 		int serverPort = 7896;
 		formatted_msg msg;
+		// set up initial connection
 		try {
-			// System.out.println(args[0] + " " + args[1] + " " + "wow");
 			System.out.println("starting a new client socket");
 			s = new Socket(args[1], serverPort);
-			out = new ObjectOutputStream(s.getOutputStream());
+			ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream in = new ObjectInputStream(s.getInputStream());
 			System.out.println("subscribing as: " + args[0]);
 			msg = new formatted_msg(args[0], "dummy");
@@ -45,11 +43,14 @@ public class TCPClient {
 				e1.printStackTrace();
 			}
 
-			// testing normal
-			formatted_msg m3 = new formatted_msg("", "");
-			m3 = formatted_msg.init(m3);
-			out.writeObject(m3);
+			// testing all type of connections
+			// create terminate meassage to close it and exit from this client
 
+							formatted_msg m3 = new formatted_msg("", "");
+							m3 = formatted_msg.init(m3);
+							out.writeObject(m3);
+							
+			//starting listening for server					
 			new Thread(new Runnable() {
 				public void run() {
 					try {
@@ -59,14 +60,11 @@ public class TCPClient {
 							Thread.sleep(50);
 						}
 					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+
 					}
 				}
 			}).start();

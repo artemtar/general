@@ -76,12 +76,18 @@ public class formatted_msg implements Serializable {
 
 		Scanner s = new Scanner(System.in);
 		CTRL mode = null;
+		String des = "";
+		String cont = "";
 		while (mode == null) {
 			System.out.println("Set Msg Type: ");
 			String type = s.nextLine();
 			switch (type) {
 			case "NORMAL":
 				mode = CTRL.NORMAL;
+				System.out.println("Destination: ");
+				des = s.nextLine();
+				System.out.println("Content");
+				cont = s.nextLine();
 				break;
 			case "TERMINATE":
 				mode = CTRL.TERMINATE;
@@ -91,6 +97,8 @@ public class formatted_msg implements Serializable {
 				break;
 			case "BROADCAST":
 				mode = CTRL.BROADCAST;
+				System.out.println("Content");
+				cont = s.nextLine();
 				break;
 			case "SETUP":
 				mode = CTRL.SETUP;
@@ -100,15 +108,9 @@ public class formatted_msg implements Serializable {
 				break;
 			}
 		}
-		System.out.println("Destination: ");
-		String des = s.nextLine();
-		System.out.println("Content");
-		String cont = s.nextLine();
-
 		msg.set_dest(des);
 		msg.set_msg(cont);
 		msg.set_ctrl(mode);
-
 		return msg;
 	}
 
