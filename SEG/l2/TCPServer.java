@@ -1,7 +1,6 @@
 package l2;
 
 import java.net.*;
-import java.beans.Expression;
 import java.io.*;
 import java.util.*;
 import l2.formatted_msg.CTRL;
@@ -79,9 +78,8 @@ class Connection extends Thread {
 
 	public void run() {
 		System.out.println("server thread started");
-
-		try {
-			while (true) {
+		while (true) {
+			try {
 				formatted_msg msg;
 				msg = (formatted_msg) in.readObject();
 				CTRL mode = msg.get_ctrl();
@@ -100,15 +98,16 @@ class Connection extends Thread {
 					}
 					// checking if connection exists
 					if (flag != true) {
-						formatted_msg sendBack = new formatted_msg("", "Recipient does not exist");
+						formatted_msg sendBack = new formatted_msg("Server", "Recipient does not exist or incorrect message type");
 						out.writeObject(sendBack);
 					}
 					break;
 				case TERMINATE:
 					msg.set_msg("Connection is terminated");
 					out.writeObject(msg);
-					Thread.sleep(50);// waiting
+					Thread.sleep(1000);// waiting
 					terminate();
+					Thread.sleep(1000);// waiting
 					break;
 				case LOOPBACK:
 					System.out.println("This is loop back: " + msg);
@@ -124,8 +123,8 @@ class Connection extends Thread {
 					}
 					break;
 				case SETUP:
-					System.out.println("Connection with " + msg.get_dest() + " is established");
-					set_my_name(msg.get_dest());
+					System.out.println("Connection with " + msg.get_from() + " is established");
+					set_my_name(msg.get_from());
 					break;
 				case GET_ALL_CLIENTS:
 					System.out.println("This is client check");
@@ -137,21 +136,22 @@ class Connection extends Thread {
 						if (i != all_connections.size() + 1)
 							clients += ",";
 					}
-					formatted_msg m = new formatted_msg(getName(), clients);
+					formatted_msg m = new formatted_msg("server", clients);
 					out.writeObject(m);
 					break;
 				}
 
 				System.out.println("num connection " + all_connections.size());
 				Thread.sleep(50);
+			} catch (EOFException e) {
+			} catch (IOException e) {
+
+			} catch (ClassNotFoundException e) {
+
+			} catch (InterruptedException e) {
+
 			}
-		} catch (EOFException e) {
-		} catch (IOException e) {
-			System.out.println("readline:" + e.getMessage());
-		} catch (ClassNotFoundException e) {
-			System.out.println("readline:" + e.getMessage());
-		} catch (InterruptedException e) {
-			System.out.println("readline:" + e.getMessage());
+
 		}
 	}
 

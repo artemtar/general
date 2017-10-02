@@ -8,13 +8,15 @@ public class formatted_msg implements Serializable {
 		NORMAL, TERMINATE, LOOPBACK, BROADCAST, SETUP, GET_ALL_CLIENTS
 	};
 
+	String from;
 	String dest;
 	String msg;
 	CTRL msg_ctrl;
 
-	public formatted_msg(String dst, String msg) {
+	public formatted_msg(String from, String msg) {
+		this.from = from;
+		dest = null;
 		this.msg = msg;
-		dest = dst;
 		msg_ctrl = CTRL.NORMAL;
 	}
 
@@ -34,6 +36,10 @@ public class formatted_msg implements Serializable {
 		return msg_ctrl;
 	}
 
+	public String get_from() {
+		return from;
+	}
+
 	public String get_dest() {
 		return dest;
 	}
@@ -47,7 +53,7 @@ public class formatted_msg implements Serializable {
 	}
 
 	public String toString() {
-		String str = "formatted_msg to " + dest + " msg: " + msg;
+		String str = "New message from " + from + ":" + msg;
 		switch (msg_ctrl) {
 		case NORMAL:
 			str += " NORMAL";
@@ -72,46 +78,40 @@ public class formatted_msg implements Serializable {
 	}
 
 	// Ask the user for the message type, destination, and content
-	static formatted_msg init(formatted_msg msg) {
-
+	public void init() {
 		Scanner s = new Scanner(System.in);
-		CTRL mode = null;
-		String des = "";
-		String cont = "";
-		while (mode == null) {
-			System.out.println("Set Msg Type: ");
-			String type = s.nextLine();
-			switch (type) {
-			case "NORMAL":
-				mode = CTRL.NORMAL;
-				System.out.println("Destination: ");
-				des = s.nextLine();
-				System.out.println("Content");
-				cont = s.nextLine();
-				break;
-			case "TERMINATE":
-				mode = CTRL.TERMINATE;
-				break;
-			case "LOOPBACK":
-				mode = CTRL.LOOPBACK;
-				break;
-			case "BROADCAST":
-				mode = CTRL.BROADCAST;
-				System.out.println("Content");
-				cont = s.nextLine();
-				break;
-			case "SETUP":
-				mode = CTRL.SETUP;
-				break;
-			case "GET_ALL_CLIENTS":
-				mode = CTRL.GET_ALL_CLIENTS;
-				break;
-			}
-		}
-		msg.set_dest(des);
-		msg.set_msg(cont);
-		msg.set_ctrl(mode);
-		return msg;
-	}
+		System.out.println("Set Msg Type: ");
+		String type = null;
+		type = s.nextLine();
 
+		switch (type) {
+		case "NORMAL":
+			msg_ctrl = CTRL.NORMAL;
+			System.out.println("Destination: ");
+			dest = s.nextLine();
+			System.out.println("Content:");
+			msg = s.nextLine();
+			break;
+		case "TERMINATE":
+			msg_ctrl = CTRL.TERMINATE;
+			break;
+		case "LOOPBACK":
+			msg_ctrl = CTRL.LOOPBACK;
+			System.out.println("Content:");
+			msg = s.nextLine();
+			break;
+		case "BROADCAST":
+			msg_ctrl = CTRL.BROADCAST;
+			System.out.println("Content");
+			msg = s.nextLine();
+			break;
+		case "SETUP":
+			msg_ctrl = CTRL.SETUP;
+			break;
+		case "GET_ALL_CLIENTS":
+			msg_ctrl = CTRL.GET_ALL_CLIENTS;
+			break;
+
+		}
+	}
 }

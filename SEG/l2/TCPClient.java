@@ -25,9 +25,8 @@ public class TCPClient {
 			ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream in = new ObjectInputStream(s.getInputStream());
 			System.out.println("subscribing as: " + args[0]);
-			msg = new formatted_msg(args[0], "dummy");
-			formatted_msg.CTRL ctrl = formatted_msg.CTRL.SETUP;
-			msg.set_ctrl(ctrl);
+			msg = new formatted_msg(args[0], "");
+			msg.set_ctrl(formatted_msg.CTRL.SETUP);
 			out.writeObject(msg);
 
 			// loopback testing connection
@@ -42,34 +41,33 @@ public class TCPClient {
 			} catch (ClassNotFoundException e1) {
 				e1.printStackTrace();
 			}
-
-			// testing all type of connections
-			// create terminate meassage to close it and exit from this client
-
-							formatted_msg m3 = new formatted_msg("", "");
-							m3 = formatted_msg.init(m3);
-							out.writeObject(m3);
 							
-			//starting listening for server					
+			//starting listening and writing to the server					
 			new Thread(new Runnable() {
 				public void run() {
-					try {
-						while (true) {
+					while (true){
+						try {
 							formatted_msg serverMes = (formatted_msg) in.readObject();
-							System.out.println("Received measage: " + serverMes);
-							Thread.sleep(50);
-						}
-					} catch (ClassNotFoundException e) {
+							System.out.println(serverMes.toString());
+							}
+						catch (ClassNotFoundException e) {
 
-					} catch (IOException e) {
+						} catch (IOException e) {
 
-					} catch (InterruptedException e) {
-
+						} 
 					}
 				}
-			}).start();
 
-			Thread.sleep(50);
+			}).start();
+			while(true){
+				formatted_msg send_out= new formatted_msg(args[0],"");
+				send_out.init();
+				if (send_out.msg == "TERMINATE"){break;}
+				out.writeObject(send_out);
+				Thread.sleep(200);
+				
+			}
+			
 		} catch (UnknownHostException e) {
 			System.out.println("Socket:" + e.getMessage());
 		} catch (EOFException e) {
@@ -86,5 +84,6 @@ public class TCPClient {
 					System.out.println("close:" + e.getMessage());
 				}
 		}
+
 	}
 }
