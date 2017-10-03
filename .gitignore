@@ -50,6 +50,7 @@ App_data/*
 *.[Oo]bj
 *.user
 *.aps
+*.ini
 *.pch
 *.vspscc
 *.vssscc
@@ -86,3 +87,7 @@ _ReSharper*/
 
 # Office Temp Files
 ~$*
+*.ini
+.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt
+*.ini
+.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt
