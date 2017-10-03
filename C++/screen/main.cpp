@@ -6,10 +6,10 @@ using std::cin;
 using std::endl;
 
 int main() {
-  char screen[g_height][g_width]{};
+  char (*screen)[5];
   clearScreen( screen ); 
-  int hLines, vLines;
-  cout << "No. of Horizontal and Vertical Lines: "; cin >> hLines; cout << endl;
+ // int hLines, vLines;
+ // cout << "No. of Horizontal and Vertical Lines: "; cin >> hLines; cout << endl;
  /* gridScreen( screen, hLines );
   printScreen( screen );
   // No clear screen
