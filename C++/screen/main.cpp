@@ -15,13 +15,13 @@ int main() {
   gridScreen( screen, hLines, hLines);
   printScreen( screen );
   // No clear screen
-  //cout << "Drawing new grid over old grid:" << endl; 
-  //cout << "No. of Horizontal Lines: "; cin >> hLines; 
-  //cout << "No. of Vertical Lines: "; cin >> vLines; cout << endl;
- /* gridScreen( screen, hLines, vLines );
+  cout << "Drawing new grid over old grid:" << endl; 
+  cout << "No. of Horizontal Lines: "; cin >> hLines; 
+  cout << "No. of Vertical Lines: "; cin >> vLines; cout << endl;
+ gridScreen( screen, hLines, vLines );
   printScreen( screen );
   clearScreen( screen );
-  return 0;*/
+  return 0;
 }
     
   
