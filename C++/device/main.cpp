@@ -1,34 +1,15 @@
-// ==========================================================================
-// $Id: main.cpp,v 1.1 2017/10/07 18:06:53 jlang Exp $
-// CSI2372 Lab 5 solution code 
-// ==========================================================================
-// (C)opyright:
-//
-//   Jochen Lang
-//   EECS, University of Ottawa
-//   800 King Edward Ave.
-//   Ottawa, On., K1N 6N5
-//   Canada. 
-//   http://www.eecs.uottawa.ca
-// 
-// Creator: jlang (Jochen Lang)
-// Email:   jlang@eecs.uottawa.ca
-// ==========================================================================
-// $Log: main.cpp,v $
-// Revision 1.1  2017/10/07 18:06:53  jlang
-// Created lab5
-//
-// ==========================================================================
 #include <iostream>
 #include <array>
-
 #include "device.h"
+#include "chargeStack.h"
 
 using std::cout;
 using std::cin;
 using std::endl;
 
 int main() {
+
+
 	// Make 6 devices using all four different device types at least once
 	std::array<Device,6> dev{{
 		{"clunker", Device::Type::phone, {1,3,2010}},
@@ -38,6 +19,7 @@ int main() {
 						{"red", Device::Type::phone, {9,6,2017}},
 							{"light", Device::Type::laptop, {3,3,2015}}}}; 
 
+							
 	// Pushing the six devices onto the charge stack
 	cout << "=================================" << endl;
 	cout << "Pushing the devices on the stack: " << endl; 
@@ -52,7 +34,7 @@ int main() {
 	cs.print(cout);
 	cout << "=================================" << endl;
 	cout << "Removing the last three devices: " << endl;
-	cout << "=================================" << endl;
+	cout << "=================================" << endl;/*
 	for (int i=0;i<3;++i) {
 		cs.pop();
 	}
@@ -76,7 +58,7 @@ int main() {
 	cout << "Printing the new stack: " << endl;
 	cout << "=================================" << endl;
 	cs2.print(cout);
-	cout << "=================================" << endl;
+	cout << "=================================" << endl;*/
 	return 0;
 }
     
