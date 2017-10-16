@@ -1,7 +1,6 @@
 #include <iostream>
 #include <array>
 #include "device.h"
-#include "chargeStack.h"
 
 using std::cout;
 using std::cin;
@@ -31,10 +30,11 @@ int main() {
 	cout << "=================================" << endl;
 	cout << "Printing the queue: " << endl;
 	cout << "=================================" << endl;
+	
 	cs.print(cout);
 	cout << "=================================" << endl;
 	cout << "Removing the last three devices: " << endl;
-	cout << "=================================" << endl;/*
+	cout << "=================================" << endl;
 	for (int i=0;i<3;++i) {
 		cs.pop();
 	}
@@ -52,13 +52,13 @@ int main() {
 	cout << "===============================================" << endl;
   // moving the remaining three 
 	for (int i=0;i<3;++i) {
-		cs2.push(cs.pop());
+	cs2.push(cs.pop());
 	}
 	cout << "=================================" << endl;
 	cout << "Printing the new stack: " << endl;
 	cout << "=================================" << endl;
 	cs2.print(cout);
-	cout << "=================================" << endl;*/
+	cout << "=================================" << endl;
 	return 0;
 }
     

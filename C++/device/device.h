@@ -1,18 +1,22 @@
 #include <string>
 #include <iostream>
+#include <vector>
 
 #ifndef DEVICE
 #define DEVICE
-using namespace std;
+
+using std::vector;
+using std::string;
+using std::cout;
+using std::ostream;
 
 struct DateOfManufacture
 {
     int day;
     int month;
     int year;
-    void print(ostream &print);
+    string to_String();
 };
-
 
 class Device
 {
@@ -25,13 +29,27 @@ class Device
         watch,
         laptop
     };
-    Device(string n, Type t, DateOfManufacture d);   
-    string toStr (Type& t);
+    Device(string n, Type t, DateOfManufacture d);
+    string toStr(Type &t);
+    string to_String();
+    ~Device();
+    Device(const Device &d);
+    Device() = default;
 
   private:
     string name;
     Type type;
     DateOfManufacture date;
+};
+
+class ChargeStack
+{
+    vector<Device> charger;
+
+  public:
+    void push(Device& d);
+    Device& pop();
+    void print(ostream& out);
 };
 
 #endif //DEVICE

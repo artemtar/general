@@ -4,25 +4,57 @@
 
 using namespace std;
 
-Device::Device(string n, Type t, DateOfManufacture d) : name(n), type(t), date(d) {}
+Device::Device(string n, Type t, DateOfManufacture d) : name(n), type(t), date(d) 
+{}
 
-void print(ostream &out)
-{
-    out << "hello " << endl;
-}
 string Device::toStr(Type &enumVal)
 {
     return (const char *[]){
-        "phone",
-        "tablet",
-        "watch",
-        "laptop",
+        "Phone",
+        "Tablet",
+        "Watch",
+        "Laptop",
     }[enumVal];
 }
 
-void DateOfManufacture::print(ostream &out)
+string DateOfManufacture::to_String()
 {
-    out << "day: " << day << ","
-        << "month: " << month << ","
-        << "year: " << year << endl;
+    return to_string(day) + "/" + to_string(month) + "/" + to_string(year);
 }
+
+string Device::to_String()
+{
+    return name + " " + toStr(type) + " Date: " + date.to_String();
+}
+Device::~Device()
+{
+    cerr << "Destructing device: " << to_String() << endl;
+}
+Device::Device(const Device& d) : name(d.name),
+                                  type(d.type),
+                                  date(d.date)
+{
+  cerr << "Copied device: " << to_String() << " Copy const" << endl;
+}
+
+void ChargeStack::push(Device& d)
+{
+charger.push_back(d);
+//cout << "ahoq" << (charger.back()).to_String << "inside" << endl;
+}
+
+Device& ChargeStack::pop()
+{
+   // cout << charger.size() << " ";
+    Device dev = charger.back();
+    charger.pop_back();
+    //cout << charger.size() << endl;
+    return dev;
+}
+
+void ChargeStack::print(ostream &out)
+{
+    for (auto &d : charger)
+        out << d.to_String() << endl;
+}
+
