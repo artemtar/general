@@ -52,7 +52,7 @@ int main() {
 	cout << "===============================================" << endl;
   // moving the remaining three 
 	for (int i=0;i<3;++i) {
-	cs2.push(cs.pop());
+	//cs2.push(cs.pop());
 	}
 	cout << "=================================" << endl;
 	cout << "Printing the new stack: " << endl;

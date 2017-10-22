@@ -24,7 +24,7 @@ double Oldstring::mean(char *c)
 
 double Oldstring::stdDev(char *c, double d)
 {
-    double var;
+    double var = 0;
     double s;
     while ((*c != '\0'))
     {
@@ -33,8 +33,9 @@ double Oldstring::stdDev(char *c, double d)
         c++;
        
     }
-    s = sqrt(var / (pointedSize - 1));
-    return s;
+    //s = sqrt(var / (pointedSize - 1));
+   // return s;
+    return sqrt(var / (pointedSize - 1));
 }
 
 string Oldstring::getWord(char *c)
