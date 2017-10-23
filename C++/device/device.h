@@ -30,15 +30,15 @@ class Device
         laptop
     };
     Device(string n, Type t, DateOfManufacture d);
-    string toStr(Type t);
-    string  to_String();
+    string toStr(Type &t);
+    string to_String();
     ~Device();
-    Device( Device& d);
+    Device(const Device &d);
     Device() = default;
 
   private:
-    string  name;
-    Type  type;
+    string name;
+    Type type;
     DateOfManufacture date;
 };
 
@@ -47,8 +47,9 @@ class ChargeStack
     vector<Device> charger;
 
   public:
-    void push(Device d);
-    Device pop();
+    ChargeStack();
+    void push(Device& d);
+    Device& pop();
     void print(ostream& out);
 };
 
