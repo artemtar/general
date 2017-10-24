@@ -2,13 +2,13 @@
 #include <iostream>
 #include <vector>
 
-#ifndef DEVICE
-#define DEVICE
-
 using std::vector;
 using std::string;
 using std::cout;
 using std::ostream;
+
+#ifndef DEVICE
+#define DEVICE
 
 struct DateOfManufacture
 {
@@ -34,7 +34,6 @@ class Device
     string to_String();
     ~Device();
     Device(const Device &d);
-    Device() = default;
 
   private:
     string name;
@@ -48,9 +47,9 @@ class ChargeStack
 
   public:
     ChargeStack();
-    void push(Device& d);
-    Device& pop();
-    void print(ostream& out);
+    void push(Device &d);
+    Device &pop();
+    void print(ostream &out);
 };
 
 #endif //DEVICE
