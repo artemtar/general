@@ -86,6 +86,7 @@ _ReSharper*/
 .svn
 
 # Office Temp Files
+.metadata
 ~$*
 *.ini
 .metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt
