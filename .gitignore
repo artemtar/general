@@ -89,6 +89,10 @@ _ReSharper*/
 .metadata
 ~$*
 *.ini
-.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt
+.vscode
+.recommenders
+.git
+.dist
+
 *.ini
-.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt
+
