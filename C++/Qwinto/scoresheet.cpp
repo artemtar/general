@@ -52,12 +52,15 @@ ostream &operator<<(ostream &_os, const Person &_p)
     _os << _p.d_sin;
     return _os;
 }
+void Person::setScore(ScoreSheet s){score = s;}
 int main()
 {
+    
     fstream ioFile;
     Person personA, personB;
     // read personA from console
     cin >> personA;
+    ScoreSheet s(<<personA);
     //cout << personA;
     cout << "-------------------" << endl;
     // output personA to file

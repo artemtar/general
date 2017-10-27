@@ -58,6 +58,7 @@ class Person
 {
     string d_lastName;
     string d_firstName;
+    ScoreSheet score;
     int d_sin;
 
   public:
@@ -67,6 +68,7 @@ class Person
     {
         cout << "~Person: " << d_lastName << endl;
     }
+    void setScore(ScoreSheet s);
     friend istream &operator>>(istream &, Person &);
     friend ostream &operator<<(ostream &, const Person &);
 };
