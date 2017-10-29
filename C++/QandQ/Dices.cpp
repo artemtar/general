@@ -14,7 +14,7 @@ void Dice::roll()
 }
 RollOfDice::RollOfDice()
 {
-    dices.reserve(3);
+    dices.reserve(6);
     Dice red(ScoreSheet::Colour::RED);
     Dice yellow(ScoreSheet::Colour::YELLOW);
     Dice blue(ScoreSheet::Colour::BLUE);
