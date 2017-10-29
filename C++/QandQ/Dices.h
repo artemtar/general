@@ -4,6 +4,9 @@
 #ifndef DICE
 #define DICE
 
+
+
+
 struct RandomDice
 {
     static int getRandomFace();
