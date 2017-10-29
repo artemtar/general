@@ -20,13 +20,6 @@ using std::ios;
 
 static const int g_height = 3;
 static const int g_width = 14;
-struct Dice
-{
-    int dice;
-    int faceValue;
-    void roll();
-    void print();
-};
 class ScoreSheet
 {
     enum Colour
@@ -47,7 +40,7 @@ class ScoreSheet
   public:
     ScoreSheet(string name = "", string lastName = "");
     void print(const ostream &os) const;
-    void score(vector<Dice> d);
+    //void score(vector<Dice> d);
 };
 
 
