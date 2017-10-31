@@ -1,11 +1,9 @@
-#include "ScoreSheet.h"
 #include <random>
 
 #ifndef DICE
 #define DICE
 
-
-
+#include "ScoreSheet.h"
 
 struct RandomDice
 {

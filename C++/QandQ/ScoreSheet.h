@@ -3,43 +3,15 @@
 #include <vector>
 #include <cstdlib>
 #include <fstream>
-#define col ScoreSheet::Colour
-
-using std::string;
-using std::ostream;
-using std::vector;
-using std::cout;
-using std::istream;
-using std::endl;
-using std::fstream;
-using std::cin;
-using std::ios;
+using namespace std;
 #ifndef SCORESHEET
 #define SCORESHEET
 
+struct Dice;
+struct RollOfDice;
 
-
-template <class Colour>
-class QwintoRow{
-    int row[16];
-    col c;
-public:
-    int& operator[](int index);
-    bool checkAdd(int place); 
-};
-
-template <class Colour>
-class QwixxRow{
-    int raw[14];
-    ScoreSheet::Colour c;
-public:
-    int& operator[](int index);
-    int& operator+=(RollOfDice r);
-    bool checkAdd(int place); 
-};
-
-ostream &operator<<(ostream &, const QwintoRow<Colour>&);
-ostream &operator<<(ostream &, const QwixxRow<Colour>&);
+//ostream &operator<<(ostream &, const QwintoRow<Colour>&);
+//ostream &operator<<(ostream &, const QwixxRow<Colour>&);
 
 class ScoreSheet
 {
@@ -55,7 +27,7 @@ class ScoreSheet
   public:
     ScoreSheet(string name = "", string lastName = "");
     void print(const ostream &os) const;
-    //void score(vector<Dice> d);
+    void score(vector<Dice> d);
     enum Colour
     {
         RED,
@@ -69,4 +41,26 @@ class ScoreSheet
 //istream &operator>>(istream &, Person &);
 //ostream &operator<<(ostream &, const Person &);
 
+
+template <class Colour>
+class QwintoRow{
+    int row[16];
+    ScoreSheet::Colour c;
+public:
+    int& operator[](int index);
+    bool checkAdd(int place); 
+};
+
+template <class Colour>
+class QwixxRow{
+    int raw[14];
+    ScoreSheet::Colour c;
+public:
+    int& operator[](int index);
+    int& operator+=(RollOfDice r);
+    bool checkAdd(int place); 
+};
+
 #endif //SCORESHEET
+
+#include "Dices.h"
