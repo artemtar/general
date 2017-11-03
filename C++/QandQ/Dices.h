@@ -5,6 +5,7 @@
 
 #include "ScoreSheet.h"
 
+
 struct RandomDice
 {
     static int getRandomFace();
