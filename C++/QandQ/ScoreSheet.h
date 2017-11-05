@@ -47,6 +47,7 @@ class QwintoRow{
     int row[16];
     ScoreSheet::Colour c;
 public:
+    Quin
     int& operator[](int index);
     bool checkAdd(int place); 
 };
