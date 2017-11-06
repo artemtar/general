@@ -2,7 +2,8 @@ from nltk.corpus import movie_reviews
 import random
 import nltk
 import pickle
-
+from nltk.classify import ClassifierI
+#from statistics import mode
 from nltk.classify.scikitlearn import SklearnClassifier
 from sklearn.naive_bayes import MultinomialNB, BernoulliNB
 from sklearn.linear_model import LogisticRegression, SGDClassifier
