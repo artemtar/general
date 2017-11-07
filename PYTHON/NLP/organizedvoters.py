@@ -1,5 +1,5 @@
-from nltk.corpus import movie_reviews
-from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
 import random
 import nltk
 import pickle
@@ -29,42 +29,55 @@ class ClassifiersVoting(ClassifierI):
         most = votes.count(mode(votes))
         return most / len(votes)
 
-words = [] # all words for feature set
+all_words = [] # all words for feature set
 #creating pool of review for tranning
 
 # J  = adjective, R = adverb, V = verb
-allowed_types = ["J", "R", "V"]
+allowed_types = ["J","R","V"]
+# not valuable words for classificarion
+noise = list(stopwords.words("english"))
+additional_noise = [',', 'I', 'the', '``', '.', '\'\'']
+for w in additional_noise:
+    noise.append(w)
 
-doc = [(list(movie_reviews.words(fileids)), category)
-       for category in movie_reviews.categories()
-       for fileids in movie_reviews.fileids(category)]
 
-with open("OpinionClassification/positive.txt", 'r') as pos:
+doc = []
+
+with open("opClass/positive.txt", 'r') as pos:
     for line in pos:
-        sentence = word_tokenize(line)
-        doc.append((sentence, "pos"))
-        for w in sentence:
-            words.append(w.lower())
+        doc.append((line, "pos"))
+        words = word_tokenize(line)
+        analyze_words = nltk.pos_tag(words)
+        for w in analyze_words:
+            #checking if this is type of word we are looking for
+            if w[1][0] in allowed_types and w[0] not in noise:
+                all_words.append(w[0].lower())
 
-with open("OpinionClassification/negative.txt", 'r') as neg:
+
+with open("opClass/negative.txt", 'r') as neg:
     for line in neg:
-        sentence = word_tokenize(line)
-        doc.append((sentence, "neg"))
-        for w in sentence:
-            words.append(w.lower())
+        doc.append((line, "neg"))
+        words = word_tokenize(line)
+        analyze_words = nltk.pos_tag(words)
+        for w in analyze_words:
+            #checking if this is type of word we are looking for
+            if w[1][0] in allowed_types and w[0] not in noise:
+                all_words.append(w[0].lower())
 
+print("all words",len(all_words))
+all_words = nltk.FreqDist(all_words)
+popular_words = list(all_words.keys())[:6000]
+addition_for_pop = ["!", "?", "!!!", "!?", "wtf", "heck",":)", ":(", ":D"]
+for w in addition_for_pop:
+    if w not in popular_words:
+        popular_words.append(w)
 
-for w in movie_reviews.words():
-    words.append(w.lower())
-words = nltk.FreqDist(words)
-popular_words = list(words.keys())[:4500]
-
-with open("Data/word_frequency_reveiw.pickle", "wb") as wfr:
+with open("Data/word_frequency_review.pickle", "wb") as wfr:
     pickle.dump(popular_words, wfr)
 
 #looling for set of common words, futureset
-def find_pop(document):
-    set_document = set(document)
+def find_pop(review):
+    set_document = set(word_tokenize(review))
     #checking if words in the most frequents words
     ispopular = {}
     for w in set_document:
@@ -72,12 +85,13 @@ def find_pop(document):
     return ispopular
 
 data = [(find_pop(rev), category) for (rev, category) in doc]
-print("future set length: ", len(data))
 
+print("future set length: ", len(data))
+print(len(data))
 random.shuffle(data)#shufle for training
 
-train_set = tuple(data[:10500])
-testing_set = tuple(data[10500:])
+train_set = tuple(data)
+testing_set = tuple(data[10000:])
 
 with open("Data/trainingData.pickle", "wb") as f:
     pickle.dump(train_set, f)
@@ -152,21 +166,3 @@ groupVoting = ClassifiersVoting(nbcClassifier,
                                 linearSVC)
 
 print("voting classifier accuracy: ", nltk.classify.accuracy(groupVoting, testing_set))
-
-
-
-
-
-print("Lia said:")
-
-text = "In bas, I liked it so much, would see it again"
-print(text)
-print("This review is:")
-print(groupVoting.classify(find_pop(text)))
-print("Lia said:")
-
-text = "Mean girls is a shitty movie, and would never see it again, waste of time"
-print(text)
-print("This review is:")
-print(groupVoting.classify(find_pop(text)))
-

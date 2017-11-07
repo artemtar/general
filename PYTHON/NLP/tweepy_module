@@ -1,0 +1,37 @@
+import json
+import moduleFor_opinionMining as module
+from tweepy import Stream
+from tweepy import OAuthHandler
+from tweepy.streaming import StreamListener
+
+#consumer key, consumer secret, access token, access secret.
+consumer_key="ultHcFK6tRL6mSr2SmPcSr0hj"
+consumer_secret="7On6sDHUo7UKLyCFsLLD3UoWICHF0JxFfnAT3I0JS8y2XMXTrs"
+access_token="927959945512972288-wpiwkfd4ywP53sH9cpRyIdHKb1DO7kj"
+access_secret="DEy1Afma4wz8DZnKMPZEkBxwQMKEMy27qn1MXw14OeZcG"
+
+
+class Listener(StreamListener):
+    def on_data(self, data):
+        all_data = json.loads(data)
+        tweet = all_data["text"]
+        sentiment_value, confidence = module.analyze(tweet)
+        print(tweet, sentiment_value, confidence)
+
+        if confidence >= 0.8:
+            output = open("twitter-out.txt", "a")
+            output.write(sentiment_value)
+            output.write('\n')
+            output.close()
+
+        return True
+
+    def on_error(self, status):
+        print(status)
+
+
+auth = OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_secret)
+print("module started")
+twitterStream = Stream(auth, Listener())
+twitterStream.filter(languages=["en"], track = ["trump"])
