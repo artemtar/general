@@ -1,14 +1,16 @@
 import json
 import moduleFor_opinionMining as module
+import pickle
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
 
+f = open("/home/superuser/Dropbox/keys/tweeter.pickle", "rb")
 #consumer key, consumer secret, access token, access secret.
-consumer_key="ultHcFK6tRL6mSr2SmPcSr0hj"
-consumer_secret="7On6sDHUo7UKLyCFsLLD3UoWICHF0JxFfnAT3I0JS8y2XMXTrs"
-access_token="927959945512972288-wpiwkfd4ywP53sH9cpRyIdHKb1DO7kj"
-access_secret="DEy1Afma4wz8DZnKMPZEkBxwQMKEMy27qn1MXw14OeZcG"
+consumer_key=pickle.load(f)
+consumer_secret=pickle.load(f)
+access_token=pickle.load(f)
+access_secret=pickle.load(f)
 
 
 class Listener(StreamListener):
