@@ -12,21 +12,27 @@ consumer_secret=pickle.load(f)
 access_token=pickle.load(f)
 access_secret=pickle.load(f)
 
+f.close()
 
 class Listener(StreamListener):
+
     def on_data(self, data):
-        all_data = json.loads(data)
-        tweet = all_data["text"]
-        sentiment_value, confidence = module.analyze(tweet)
-        print(tweet, sentiment_value, confidence)
+        try:
 
-        if confidence >= 0.8:
-            output = open("twitter-out.txt", "a")
-            output.write(sentiment_value)
-            output.write('\n')
-            output.close()
+            all_data = json.loads(data)
+            tweet = all_data["text"]
+            sentiment_value, confidence = module.analyze(tweet)
+            print(tweet, sentiment_value, confidence)
 
-        return True
+            if confidence >= 0.8:
+                output = open("twitter.txt", "a")
+                output.write(sentiment_value)
+                output.write('\n')
+                output.close()
+
+            return True
+        except:
+            pass
 
     def on_error(self, status):
         print(status)
