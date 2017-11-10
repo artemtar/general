@@ -21,7 +21,7 @@ struct RollOfDice
     vector<Dice> dices;
     RollOfDice(); //might use two diffrent construct if needed to work with both games
     void roll();
-    RollOfDice pair(int d, int d2);
+    RollOfDice pair(int d1, int d2);
     operator int();
 };
 string colToStr(ScoreSheet::Colour c);
