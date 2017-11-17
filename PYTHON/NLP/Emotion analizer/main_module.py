@@ -27,25 +27,27 @@ class ClassifiersVoting(ClassifierI):
                 emo_dic[vote] += 1 + i
             i += 0.05
     # checking for the vote with highest result
-        res = 0
+        highest = 0
         classification = ''
         for key in emo_dic:
-            if emo_dic[key] > res:
+            if emo_dic[key] > highest:
                 classification = key
+                highest = emo_dic[key]
         return classification
 
     def confidence(self, featureset):
 
             classification = self.classify(featureset)
-            print(classification)
             count = 0
             if classification == "ne":
-                cout = -1
+                count = -2
+            votes = []
             for c in self._classifiers:
                 vote = c.classify(featureset)
+                votes.append(vote)
                 if vote == classification:
                     count += 1
-            return count / len(self._classifiers)
+            return count / len(self._classifiers)#, votes
 
 file = open("EmotionData/word_frequency_reveiw.pickle", "rb")
 frequency_list = pickle.load(file)
@@ -84,9 +86,9 @@ file = open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/multinomialN
 multinomialNB_class = pickle.load(file)
 file.close()
 
-# file = open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/bernulli_class.pickle", "rb")
-# bernulli_class = pickle.load(file)
-# file.close()
+file = open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/bernulli_class.pickle", "rb")
+bernulli_class = pickle.load(file)
+file.close()
 
 file = open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/SGD_class.pickle", "rb")
 SGD_class =  pickle.load(file)
@@ -111,13 +113,14 @@ file.close()
 
 
 groupVoting = ClassifiersVoting(#nbcClassifier,
+                                bernulli_class,
                                 multinomialNB_class,
-                                #bernulli_class,
                                 SGD_class,
                                 logist_regres_class,
                                 #SVC,
                                 #nuSVC,
-                                linearSVC)
+                                linearSVC
+                                 )
 
 # print(nltk.classify.accuracy(groupVoting, test_data))
 
@@ -126,12 +129,12 @@ def analyze(text):
     return groupVoting.classify(feature_set), groupVoting.confidence(feature_set)
 
 # ph = "My life on the weekdays is tae kwon do its what i was born to do i love i there i love to teach people who want to be taught"
-ph1 = "WATCH: Congressman Warns Of Coup Plan Against Trump On The House Floor!"
+#ph1 = "WATCH: Congressman Warns Of Coup Plan Against Trump On The House Floor!"
 # ph2 = "I can t believe she is FINALLY here!!"
 #
 #
 #
-print(find_popular(ph1))
+#print(find_popular(ph1))
 # print(analyze(ph1))
 #print("nuSVC accuracy: ",  linearSVC.classify((find_popular(ph))))
 # print("nuSVC accuracy: ",  SGD_class.classify(find_popular(ph2)))

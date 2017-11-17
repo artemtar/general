@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
-import time
-import numpy as np
 style.use("fivethirtyeight")
 
 
@@ -25,7 +23,7 @@ def animate(i):
     for em in emotions:
         emo_dic[em] = 0
     try:
-        for res in lines[-100:]:
+        for res in lines[-50:]:
             if res in emotions:
                 temp = emo_dic[res]
                 emo_dic[res] = temp + 1
@@ -43,7 +41,7 @@ def animate(i):
     return p1
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
-anim = animation.FuncAnimation(fig, animate,frames=200, interval=1000, blit=True )
+anim = animation.FuncAnimation(fig, animate,frames=200, interval=500, blit=True )
 plt.ylabel("emotions")
 plt.title("Emotion Analyzer")
 plt.show()

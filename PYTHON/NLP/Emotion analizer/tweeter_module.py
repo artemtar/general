@@ -7,11 +7,10 @@ from tweepy.streaming import StreamListener
 
 f = open("/home/superuser/Dropbox/keys/tweeter.pickle", "rb")
 #consumer key, consumer secret, access token, access secret.
-consumer_key=pickle.load(f)
-consumer_secret=pickle.load(f)
-access_token=pickle.load(f)
-access_secret=pickle.load(f)
-
+consumer_key = pickle.load(f)
+consumer_secret = pickle.load(f)
+access_token = pickle.load(f)
+access_secret = pickle.load(f)
 f.close()
 
 class Listener(StreamListener):
@@ -25,7 +24,7 @@ class Listener(StreamListener):
             print(tweet, sentiment_value, confidence)
 
 
-            if confidence >= 0.75:
+            if confidence >= 0.6:
                 output = open("EmotionData/twitter.txt", "a")
                 output.write(sentiment_value)
                 output.write('\n')
@@ -43,4 +42,4 @@ auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
 print("module started")
 twitterStream = Stream(auth, Listener())
-twitterStream.filter(languages=["en"], track = ["happy"])
+twitterStream.filter(languages=["en"], track = ["trump"] )

@@ -52,28 +52,30 @@ class ClassifiersVoting(ClassifierI):
 
 
 wordPool = [] #all words in training data
-
+countne = 0
 data = [] #all data
 # create dictionary with all data
 with  open("trainingData.data", 'r') as file_data:
     print("file:" + file_data.name + " open")
     for line in file_data:
-    #line = file_data.readline()
         try:
             val = re.findall('\'\s(.+)\s\'\,', line)
             key = re.findall('\s\'\,(.+)[\r\n]+', line)
+            # if key[0] != 'ne':
+            #     countne += 1
             sent = []
             for w in word_tokenize(val[0]):
                 wordPool.append(w)
                 sent.append(w)
-            #if key[0] != 'ne':
+
             data.append((sent, key[0]))
         except:
             print("warning")
+print(countne, "this is negative")
 random.shuffle(data)
 #remove noisy data from analize list
 noise = list(stopwords.words("english"))
-additional_noise = [',', 'I', 'the', '``', '.', '\'\'']
+additional_noise = [',', 'I', 'the', '``', '.', '\'\'', 'The', '(', ')']
 for w in additional_noise:
     if w not in noise:
         noise.append(w)
@@ -99,25 +101,93 @@ for w in allowed_wordPool_clean:
         analyze_list.append(nltk.stem.WordNetLemmatizer().lemmatize(w))
     except:
         print("warning")
-#analyze_list = allowed_wordPool_clean
 
 
-frequent_list = list(nltk.FreqDist(analyze_list))
-print(len(frequent_list), "ready and clean")
+#additional emotion words, going straight into frequency set
+emotion_words = []
+anger = open("EmotionData/anger.txt", "r")
+for line in anger:
+    words = re.findall('\d\s(.+)[\r\n]+', line)
+    for w in words:
+        token = word_tokenize(w)
+        for t in token:
+            emotion_words.append(t)
+
+disgust = open("EmotionData/disgust.txt", "r")
+for line in anger:
+    words = re.findall('\d\s(.+)[\r\n]+', line)
+    for w in words:
+        token = word_tokenize(w)
+        for t in token:
+            emotion_words.append(t)
+
+fear = open("EmotionData/fear.txt", "r")
+for line in anger:
+    words = re.findall('\d\s(.+)[\r\n]+', line)
+    for w in words:
+        token = word_tokenize(w)
+        for t in token:
+            emotion_words.append(t)
+
+joy = open("EmotionData/joy.txt", "r")
+for line in anger:
+    words = re.findall('\d\s(.+)[\r\n]+', line)
+    for w in words:
+        token = word_tokenize(w)
+        for t in token:
+            emotion_words.append(t)
+
+sadness = open("EmotionData/sadness.txt", "r")
+for line in anger:
+    words = re.findall('\d\s(.+)[\r\n]+', line)
+    for w in words:
+        token = word_tokenize(w)
+        for t in token:
+            emotion_words.append(t)
+
+surprize = open("EmotionData/surprise.txt", "r")
+for line in anger:
+    words = re.findall('\d\s(.+)[\r\n]+', line)
+    for w in words:
+        token = word_tokenize(w)
+        for t in token:
+            emotion_words.append(t)
+
+anger.close()
+disgust.close()
+fear.close()
+joy.close()
+sadness.close()
+surprize.close()
+
+manually_add = ["!", "?", "!!!", "!?", "wtf", "heck",":)", ":(", ":D"]
+
+print(len(analyze_list), "ready and clean")
+frequent_list = nltk.FreqDist(analyze_list)
+frequent_list = [w for (w, i) in list(frequent_list.most_common(5000))]
+
+
+for w in manually_add:
+    if w not in analyze_list:
+        w = w.lower()
+        frequent_list.append(w)
+for w in emotion_words:
+    if w not in analyze_list:
+        w = w.lower()
+        frequent_list.append(w)
+
+print(frequent_list[:20])
+print(len(frequent_list))
+
 with open("EmotionData/word_frequency_reveiw.pickle", "wb") as wfr:
     pickle.dump(frequent_list, wfr)
-
-
-addition_for_pop = ["!", "?", "!!!", "!?", "wtf", "heck",":)", ":(", ":D"]
-for w in addition_for_pop:
-    if w not in frequent_list:
-        frequent_list.append(w)
 
 def find_popular (d):
     popular = {}
     set_of_words = set(d)
     for w in set_of_words:
         try:
+            w = w.lower()
             w = (nltk.stem.WordNetLemmatizer().lemmatize(w))
         except:
             print("warning")
@@ -144,14 +214,15 @@ print("nlk naive accuracy: ", nltk.classify.accuracy(nbcClassifier, test_data))
 with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/nbcClassifier.pickle", "wb") as f:
     pickle.dump(nbcClassifier, f)
 
-#off at 2000 res 63%
-# multinomialNB_class = SklearnClassifier(MultinomialNB())
-# multinomialNB_class.train(training_data)
-# print("multibinomial accuracy: ", nltk.classify.accuracy(multinomialNB_class, test_data))
-#
-# with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/multinomialNB_class.pickle", "wb") as f:
-#     pickle.dump(multinomialNB_class, f)
+#off at 2000 res 65%
+multinomialNB_class = SklearnClassifier(MultinomialNB())
+multinomialNB_class.train(training_data)
+print("multibinomial accuracy: ", nltk.classify.accuracy(multinomialNB_class, test_data))
 
+with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/multinomialNB_class.pickle", "wb") as f:
+    pickle.dump(multinomialNB_class, f)
+
+#60%
 bernulli_class = SklearnClassifier(BernoulliNB())
 bernulli_class.train(training_data)
 print("bersnulli accuracy: ", nltk.classify.accuracy(bernulli_class, test_data))
@@ -159,30 +230,30 @@ print("bersnulli accuracy: ", nltk.classify.accuracy(bernulli_class, test_data))
 with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/bernulli_class.pickle", "wb") as f:
     pickle.dump(bernulli_class, f)
 
-#switched at 5000 res 72%
-# SGD_class= SklearnClassifier(SGDClassifier())
-# SGD_class.train(training_data)
-# print("SGD accuracy: ", nltk.classify.accuracy(SGD_class, test_data))
-#
-# with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/SGD_class.pickle", "wb") as f:
-#     pickle.dump(SGD_class, f)
+#switched at 5000 res 68%
+SGD_class= SklearnClassifier(SGDClassifier())
+SGD_class.train(training_data)
+print("SGD accuracy: ", nltk.classify.accuracy(SGD_class, test_data))
 
-#switched as 3000 result 76%
-# logist_regres_class = SklearnClassifier(LogisticRegression())
-# logist_regres_class.train(training_data)
-# print("logistic regression accuracy: ", nltk.classify.accuracy(logist_regres_class, test_data))
-#
-# with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/logist_regres_class.pickle", "wb") as f:
-#     pickle.dump(logist_regres_class, f)
+with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/SGD_class.pickle", "wb") as f:
+    pickle.dump(SGD_class, f)
+
+#switched as 3000 result 71%
+logist_regres_class = SklearnClassifier(LogisticRegression())
+logist_regres_class.train(training_data)
+print("logistic regression accuracy: ", nltk.classify.accuracy(logist_regres_class, test_data))
+
+with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/logist_regres_class.pickle", "wb") as f:
+    pickle.dump(logist_regres_class, f)
 
 #switched off at 4000 frequency list
-SVC = SklearnClassifier(SVC())
-SVC.train(training_data)
-print("SVC accuracy: ", nltk.classify.accuracy(SVC, test_data))
-
-with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/SVC.pickle", "wb") as f:
-    pickle.dump(SVC, f)
-
+# SVC = SklearnClassifier(SVC())
+# SVC.train(training_data)
+# print("SVC accuracy: ", nltk.classify.accuracy(SVC, test_data))
+#
+# with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/SVC.pickle", "wb") as f:
+#     pickle.dump(SVC, f)
+#
 # nuSVC = SklearnClassifier(NuSVC())
 # nuSVC.train(training_data)
 # print("nuSVC accuracy: ", nltk.classify.accuracy(nuSVC, test_data))
@@ -200,7 +271,7 @@ with open ("/home/superuser/Dropbox/git/PYTHON/ML/EmotionAnalyzer/SVC.pickle", "
 
 groupVoting = ClassifiersVoting(nbcClassifier,
                                 #multinomialNB_class,
-                                bernulli_class,
+                                #bernulli_class,
                                 #SGD_class,
                                 #logist_regres_class,
                                 #SVC,
