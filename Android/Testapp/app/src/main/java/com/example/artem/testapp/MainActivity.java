@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
         TextView t = (TextView) cust.findViewById(R.id.textView);
         t.setText("new whateeber");
         lm.addView(cust);
+        ListView listmain = (ListView) findViewById(R.id.listMain);
+        String[] s = {"1", "2", "3", "4", "5", "6", "7"};
+        customeAdapter c = new customeAdapter(MainActivity.this, s);
+        listmain.setAdapter(c);
+
+
+
 
     }
 }
