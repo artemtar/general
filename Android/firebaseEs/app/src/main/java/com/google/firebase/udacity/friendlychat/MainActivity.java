@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.firebase.udacity.friendlychat;
+
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +27,7 @@ import android.view.MenuItem;import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+package com.google.firebase.udacity.friendlychat;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
