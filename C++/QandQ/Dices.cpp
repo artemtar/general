@@ -61,19 +61,19 @@ string colToStr(ScoreSheet::Color c)
     }[c];
 }
 
-int main()
-{
-    //run test
-    cout << "ROLL:" << endl;
-    RollOfDice r;
-    int i = r;
-    cout << r;
-    cout << "total is:";
-    cout << i << endl;
-    cout << "REROLL:" << endl;
-    r.roll();
-    i = r;
-    cout << r;
-    cout << "total is:";
-    cout << i << endl;
-}
+// int main()
+// {
+//     //run test
+//     cout << "ROLL:" << endl;
+//     RollOfDice r;
+//     int i = r;
+//     cout << r;
+//     cout << "total is:";
+//     cout << i << endl;
+//     cout << "REROLL:" << endl;
+//     r.roll();
+//     i = r;
+//     cout << r;
+//     cout << "total is:";
+//     cout << i << endl;
+// }
