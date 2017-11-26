@@ -11,20 +11,20 @@ struct RandomDice
 };
 struct Dice
 {
-    const ScoreSheet::Colour c;
+    const ScoreSheet::Color c;
     int face;
     void roll();
-    Dice(ScoreSheet::Colour col);
+    Dice(ScoreSheet::Color);
 };
 struct RollOfDice
 {
     vector<Dice> dices;
     RollOfDice(); //might use two diffrent construct if needed to work with both games
     void roll();
-    RollOfDice pair(int d1, int d2);
+    RollOfDice pair(int, int);
     operator int();
 };
-string colToStr(ScoreSheet::Colour c);
+string colToStr(ScoreSheet::Color);
 ostream &operator<<(ostream &, const RollOfDice &);
 ostream &operator<<(ostream &, const Dice &);
 

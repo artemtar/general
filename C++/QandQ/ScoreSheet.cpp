@@ -1,16 +1,17 @@
 #include "ScoreSheet.h"
 
+ostream &operator<<(ostream & _os, const QwintoRow<C> &qr){
+    for (auto i : row){
+        _os << i;
+    }
+    return _os;
+}
 
 
-// int& QwintoRow<Colour>::operator[](int index){
-//     assert(index >=0 && index < 16);
-//     return row[index];
-
-// }
-bool checkAdd(int place); 
 
 
 int main (){
     //testing
+    //QwintoRow<ScoreSheet::Color::RED> qr;
 
 }

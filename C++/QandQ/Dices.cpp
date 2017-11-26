@@ -7,7 +7,7 @@ int RandomDice::getRandomFace()
     std::mt19937 gen(rd());
     dis(gen);
 }
-Dice::Dice(ScoreSheet::Colour col) : c(col) { roll(); }
+Dice::Dice(ScoreSheet::Color col) : c(col) { roll(); }
 void Dice::roll()
 {
     face = RandomDice::getRandomFace();
@@ -15,9 +15,9 @@ void Dice::roll()
 RollOfDice::RollOfDice()
 {
     dices.reserve(6);
-    Dice red(ScoreSheet::Colour::RED);
-    Dice yellow(ScoreSheet::Colour::YELLOW);
-    Dice blue(ScoreSheet::Colour::BLUE);
+    Dice red(ScoreSheet::Color::RED);
+    Dice yellow(ScoreSheet::Color::YELLOW);
+    Dice blue(ScoreSheet::Color::BLUE);
     dices.push_back(red);
     dices.push_back(yellow);
     dices.push_back(blue);
@@ -50,7 +50,7 @@ ostream &operator<<(ostream &_os, const RollOfDice &set)
     }
     return _os;
 }
-string colToStr(ScoreSheet::Colour c)
+string colToStr(ScoreSheet::Color c)
 {
     return (const char *[]){
         "Red",
