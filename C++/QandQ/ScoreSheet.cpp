@@ -11,7 +11,7 @@ ScoreSheet::ScoreSheet(string name) : name_player(name)
 
 bool ScoreSheet::operator!()
 {
-    if (num_failed[3] == 4)
+            if (num_failed[3] == 4)
         return true;
     else
         return false;
@@ -36,6 +36,10 @@ int QwintoScoreSheet::calcTotal()
 }
 bool QwintoScoreSheet::operator!()
 {
+    ScoreSheet& parent = *this;
+    if(!parent) return false;
+    //more code is comming
+    
 }
 const int* ScoreSheet::getFails()const{
     return num_failed;
@@ -58,6 +62,13 @@ ostream &operator<<(ostream &out, const QwintoScoreSheet &qss)
     cout << endl;
     return out;
 }
+//-----End of QwixScoreSheet
+
+//insert code for qwix
+
+//-----Initialization of QwixScoreSheet
+
+
 //-----End of QwintoScoreSheet
 int main()
 {

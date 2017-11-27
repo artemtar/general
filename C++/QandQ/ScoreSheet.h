@@ -76,6 +76,7 @@ template <class T, const ScoreSheet::Color C>
 class QwixRow
 {
     int row[11];
+    bool validate(int) override;
   public:
     int &operator[](int);
     int &operator+=(RollOfDice&);

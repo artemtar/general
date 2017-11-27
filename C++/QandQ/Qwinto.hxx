@@ -28,8 +28,8 @@ bool QwintoRow<C>::validate(int index)
 template <const ScoreSheet::Color C>
 int &QwintoRow<C>::operator[](int index)
 {
-    bool (*check)(int);
-    check = &validate;
+    //bool (*check)(int);
+    //check = &validate;
     //if (check(index))
         return row[index];
     //if cannot insert return -1 for error check
