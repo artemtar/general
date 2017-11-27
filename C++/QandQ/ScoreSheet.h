@@ -21,14 +21,13 @@ class ScoreSheet
     int score_red[], score_yellow[], score_blue[];
     // int score_3colors[][];
     int overallScore;
-    int num_failed;
+    int num_failed[4];
     string name_player;
     bool ended;
     //Give the class ScoreSheet a print function that accepts an std::ostream and
     // inserts the score sheet formatted as in the above example into the stream.
   protected:
-    virtual bool validate() = 0;
-
+    virtual bool validate(int) = 0;
   public:
     enum Color
     {
@@ -38,12 +37,13 @@ class ScoreSheet
         GREEN,
         WHITE
     };
-    ScoreSheet(string s = "");
+    ScoreSheet(string s = "");    
     //void print(const ostream &os) const;
     virtual bool score(RollOfDice, Color, int pos = -1) = 0;
     virtual int calcTotal() = 0;
     //void setTotal();
     virtual bool operator!();
+    const int* getFails()const;
     friend ostream& operator<<(ostream& , const ScoreSheet&);
 };
 #endif //SCORESHEET
@@ -53,12 +53,11 @@ class ScoreSheet
 template <const ScoreSheet::Color C>
 class QwintoRow
 {
-    int row[16];
-
-  public:
+    int row[10];
     bool validate(int);
-    int &operator[](int);  
-    //#include "Qwinto.hxx" 
+  public:
+    QwintoRow();
+    int &operator[](int);
     friend ostream& operator<<(ostream& out, const QwintoRow<C>& qr){
     for (auto i : qr.row){
         out << i;
@@ -66,6 +65,7 @@ class QwintoRow
     return out;
 }
 };
+//separate file to hold declaration of template
 #include "Qwinto.hxx"
 #endif //QWINTOROW
 
@@ -75,7 +75,7 @@ class QwintoRow
 template <class T, const ScoreSheet::Color C>
 class QwixRow
 {
-    int row[14];
+    int row[11];
   public:
     int &operator[](int);
     int &operator+=(RollOfDice&);
@@ -96,11 +96,12 @@ class QwintoScoreSheet : public ScoreSheet
 {
     QwintoRow<RED> red;
     QwintoRow<YELLOW> yellow;
-    QwintoRow<BLUE> blue;
-
+    QwintoRow<BLUE> blue;        
+    
   public:
   QwintoScoreSheet(string, QwintoRow<RED>, QwintoRow<YELLOW>, QwintoRow<BLUE>);
     bool score(RollOfDice, ScoreSheet::Color, int pos = -1) override;
+    bool validate(int);
     int calcTotal() override;
     bool operator!() override;
     friend ostream& operator<<(ostream& , const QwintoScoreSheet&);
