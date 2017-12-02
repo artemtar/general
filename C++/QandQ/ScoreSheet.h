@@ -34,7 +34,7 @@ class ScoreSheet
         WHITE
     };
     ScoreSheet(string s = "");
-    virtual bool score(RollOfDice, Color, int pos = -1) = 0;
+    virtual bool score(RollOfDice&, ScoreSheet::Color, int pos = -1) = 0;
     void setTotal();
     virtual int calcTotal() = 0;
     //void setTotal();
@@ -105,7 +105,7 @@ class QwintoScoreSheet : public ScoreSheet
 
   public:
     QwintoScoreSheet(string, QwintoRow<RED>, QwintoRow<YELLOW>, QwintoRow<BLUE>);
-    bool score(RollOfDice, ScoreSheet::Color, int pos = -1) override;
+    bool score(RollOfDice&, ScoreSheet::Color, int pos = -1) override;
     bool validate(int);
     int calcTotal() override;
     bool operator!() override;
@@ -124,7 +124,7 @@ class QwixScoreSheet : public ScoreSheet
 
   public:
     QwixScoreSheet(string, QwintoRow<RED>, QwintoRow<YELLOW>, QwintoRow<BLUE>, QwintoRow<GREEN>);
-    bool score(RollOfDice, ScoreSheet::Color, int pos = -1) override;
+    bool score(RollOfDice&, ScoreSheet::Color, int pos = -1) override;
     bool validate(int);
     int calcTotal() override;
     bool operator!() override;

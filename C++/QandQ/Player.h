@@ -14,7 +14,6 @@ class Player
     inline void setStatusActive();
     inline void setStatusInactuve();
     virtual inline bool getStatus();
-    //void setScore(ScoreSheet& s);
     virtual void inputBeforeRoll(RollOfDice &) = 0;
     virtual void inputAfterRoll(RollOfDice &) = 0;
     friend istream &operator>>(istream &, Player &);
