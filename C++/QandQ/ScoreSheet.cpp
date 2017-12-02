@@ -16,10 +16,19 @@ bool ScoreSheet::operator!()
     else
         return false;
 }
+// void ScoreSheet::print(ostream &os){
+//     os << name_player;
+//     return os;
+// }
 ostream &operator<<(ostream &out, const ScoreSheet &s)
 {
     out << s.name_player;
-    return out;
+    s.print(out);
+    for (auto i : s.num_failed)
+    {
+        out << i << " ";
+    }
+    return out << endl;
 }
 //-----End of Scoresheet
 
@@ -62,18 +71,24 @@ int QwintoScoreSheet::calcTotal()
         rowsTotal = blue.amountNums();
     //calculating columns
     int colTotal = 0;
-    if(red[0] != -1 && yellow[1] != -1 && blue[3] != -1) colTotal += blue[3];
-    if(red[1] != -1 && yellow[2] != -1 && blue[4] != -1) colTotal += red[1];
-    if(red[5] != -1 && yellow[6] != -1 && blue[7] != -1) colTotal += red[5];
-    if(red[6] != -1 && yellow[7] != -1 && blue[8] != -1) colTotal += yellow[7];
-    if(red[7] != -1 && yellow[8] != -1 && blue[9] != -1) colTotal += blue[9];
+    if (red[0] != -1 && yellow[1] != -1 && blue[3] != -1)
+        colTotal += blue[3];
+    if (red[1] != -1 && yellow[2] != -1 && blue[4] != -1)
+        colTotal += red[1];
+    if (red[5] != -1 && yellow[6] != -1 && blue[7] != -1)
+        colTotal += red[5];
+    if (red[6] != -1 && yellow[7] != -1 && blue[8] != -1)
+        colTotal += yellow[7];
+    if (red[7] != -1 && yellow[8] != -1 && blue[9] != -1)
+        colTotal += blue[9];
 
     int fails = 0;
-    for(int i = 0; i < 3; ++i){
+    for (int i = 0; i < 3; ++i)
+    {
         if (num_failed[i] != -1)
-        fails += 1;
+            fails += 1;
     }
-    
+
     return rowsTotal + colTotal - 5 * fails;
 }
 bool QwintoScoreSheet::operator!()
@@ -88,46 +103,57 @@ bool QwintoScoreSheet::operator!()
     else
         return true;
 }
-const int *ScoreSheet::getFails() const
+
+ostream &operator<<(ostream &os, const QwintoScoreSheet &qss)
 {
-    return num_failed;
+    return qss.print(os);
 }
-ostream &operator<<(ostream &out, const QwintoScoreSheet &qss)
+ostream &QwintoScoreSheet::print(ostream &out) const
 {
-    const ScoreSheet *parent = &qss;
-    out << *parent << endl;
+
+    //ScoreSheet::print(out);
+    // out << *parent << endl;
     out << "    -------------------------" << endl;
-    out << "    " << qss.red << endl;
+    out << "    " << red << endl;
     out << "  -------------------------" << endl;
-    out << "  " << qss.yellow << endl;
+    out << "  " << yellow << endl;
     out << "-------------------------" << endl;
-    out << "" << qss.blue << endl
+    out << "" << blue << endl
         << endl;
     out << "Failed: ";
-    for (int i = 0; i < 4; ++i)
-    {
-        if (*(parent->getFails() + i) != 100) //for debuging change 100 to -1 when finished
-            cout << *(parent->getFails() + i) << " ";
-    }
+    //for (int i = 0; i < 4; ++i)
+    // {
+    //     if (*(parent->getFails() + i) != 100) //for debuging change 100 to -1 when finished
+    //         cout << *(parent->getFails() + i) << " ";
+    // }
     cout << endl;
     return out;
 }
 //-----End of QwixScoreSheet
 
-//insert code for qwix
-
 //-----Initialization of QwixScoreSheet
-
-//-----End of QwintoScoreSheet
-int main()
+ostream &operator<<(ostream &os, const QwixScoreSheet &qss)
 {
-    //testing
-    QwintoRow<ScoreSheet::Color::RED> qr;
-    QwintoRow<ScoreSheet::Color::YELLOW> qy;
-    QwintoRow<ScoreSheet::Color::BLUE> qb;
-    RollOfDice r;
-    cout << r << "roled" << endl;
-    qr[2] = r;
-    QwintoScoreSheet qs("Artem", qr, qy, qb);
-    cout << qs;
+    return qss.print(os);
 }
+ostream &QwixScoreSheet::print(ostream &out) const
+{
+}
+//-----End of QwintoScoreSheet
+// int main()
+// {
+//     //testing
+//     QwintoRow<ScoreSheet::Color::RED> qr;
+//     QwintoRow<ScoreSheet::Color::YELLOW> qy;
+//     QwintoRow<ScoreSheet::Color::BLUE> qb;
+//     RollOfDice r;
+//     cout << r << "roled" << endl;
+//     qr[2] = r;
+//     QwintoScoreSheet qs("Artem", qr, qy, qb);
+//     ScoreSheet& parent = qs;
+//     cout << parent;
+//     r.roll();
+//     parent.score(r, ScoreSheet::Color::RED, 5);
+//     cout << parent;
+
+// }

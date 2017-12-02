@@ -16,13 +16,14 @@ struct RollOfDice;
 
 class ScoreSheet
 {
-    int overallScore;    
+    int overallScore;
     string name_player;
     bool ended;
     //Give the class ScoreSheet a print function that accepts an std::ostream and
   protected:
     virtual bool validate(int) = 0;
     int num_failed[4];
+
   public:
     enum Color
     {
@@ -32,15 +33,15 @@ class ScoreSheet
         GREEN,
         WHITE
     };
-    ScoreSheet(string s = "");    
-    //void print(const ostream &os) const;
-    virtual bool score(RollOfDice, Color, int pos = -1) = 0; 
+    ScoreSheet(string s = "");
+    virtual bool score(RollOfDice, Color, int pos = -1) = 0;
     void setTotal();
     virtual int calcTotal() = 0;
     //void setTotal();
     virtual bool operator!();
-    const int* getFails()const;
-    friend ostream& operator<<(ostream& , const ScoreSheet&);
+    //call cout of children
+    virtual ostream& print(ostream &)const = 0;
+    friend ostream &operator<<(ostream &, const ScoreSheet &);
 };
 #endif //SCORESHEET
 
@@ -51,22 +52,24 @@ class QwintoRow
 {
     int row[10];
     bool validate(int);
+
   public:
     QwintoRow();
     int &operator[](int);
     bool isFull();
     int amountNums();
-    friend ostream& operator<<(ostream& out, const QwintoRow<C>& qr){
-    for (auto i : qr.row){
-        out << i;
+    friend ostream &operator<<(ostream &out, const QwintoRow<C> &qr)
+    {
+        for (auto i : qr.row)
+        {
+            out << i;
+        }
+        return out;
     }
-    return out;
-}
 };
 //separate file to hold declaration of template
 #include "Qwinto.hxx"
 #endif //QWINTOROW
-
 
 #ifndef QWIXROW
 #define QWIXROW
@@ -75,16 +78,19 @@ class QwixRow
 {
     int row[11];
     bool validate(int) override;
+
   public:
     int &operator[](int);
-    int &operator+=(RollOfDice&);
+    int &operator+=(RollOfDice &);
     bool checkAdd(int);
-    friend ostream& operator<<(ostream& out, const QwixRow<T,C>& qr){
-    for (auto i : qr.row){
-        out << i;
+    friend ostream &operator<<(ostream &out, const QwixRow<T, C> &qr)
+    {
+        for (auto i : qr.row)
+        {
+            out << i;
+        }
+        return out;
     }
-    return out;
-}
 };
 #include "Qwix.hxx"
 #endif //QWIXROW
@@ -95,15 +101,16 @@ class QwintoScoreSheet : public ScoreSheet
 {
     QwintoRow<RED> red;
     QwintoRow<YELLOW> yellow;
-    QwintoRow<BLUE> blue;        
-    
+    QwintoRow<BLUE> blue;
+
   public:
-  QwintoScoreSheet(string, QwintoRow<RED>, QwintoRow<YELLOW>, QwintoRow<BLUE>);
+    QwintoScoreSheet(string, QwintoRow<RED>, QwintoRow<YELLOW>, QwintoRow<BLUE>);
     bool score(RollOfDice, ScoreSheet::Color, int pos = -1) override;
     bool validate(int);
     int calcTotal() override;
     bool operator!() override;
-    friend ostream& operator<<(ostream& , const QwintoScoreSheet&);
+    ostream& print(ostream &) const override;
+    friend ostream &operator<<(ostream &, const QwintoScoreSheet &);
 };
 #endif //QWINTOSCORESHEET
 
@@ -112,14 +119,16 @@ class QwintoScoreSheet : public ScoreSheet
 #define QWIXSCORESHEET
 class QwixScoreSheet : public ScoreSheet
 {
-  //vector red_yellow;
- // list blue_green;
+    //vector red_yellow;
+    // list blue_green;
 
   public:
-  QwixScoreSheet(string, QwintoRow<RED>, QwintoRow<YELLOW>, QwintoRow<BLUE>, QwintoRow<GREEN>);
+    QwixScoreSheet(string, QwintoRow<RED>, QwintoRow<YELLOW>, QwintoRow<BLUE>, QwintoRow<GREEN>);
     bool score(RollOfDice, ScoreSheet::Color, int pos = -1) override;
+    bool validate(int);
     int calcTotal() override;
     bool operator!() override;
-    friend ostream& operator<<(ostream& , const QwixScoreSheet&);
+    ostream& print(ostream &) const override;
+    friend ostream &operator<<(ostream &, const QwixScoreSheet &);
 };
 #endif //QWIXSCORESHEET

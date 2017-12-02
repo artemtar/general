@@ -2,51 +2,53 @@
 #ifndef PLAYER
 #define PLAYER
 
-class Person
+class Player
 {
+  protected:
     string name;
-    bool status;
+    bool status = false;
+    //ScoreSheet board;
 
   public:
-    Person(const string &_name = "");
-    ~Person()
-    {
-        cout << "~Person: " << d_lastName << endl;
-    }
-    inline bool getStatus();
-    void setScore(ScoreSheet s);
-    virtual void inputBeforeRoll(RollOfDice&) = 0;
-    virtual void inputAfterRoll(RollOfDice&) = 0;
-    friend istream &operator>>(istream &, Person &);
-    friend ostream &operator<<(ostream &, const Person &);
+    Player(const string &_name = "");
+    inline void setStatusActive();
+    inline void setStatusInactuve();
+    virtual inline bool getStatus();
+    //void setScore(ScoreSheet& s);
+    virtual void inputBeforeRoll(RollOfDice &) = 0;
+    virtual void inputAfterRoll(RollOfDice &) = 0;
+    friend istream &operator>>(istream &, Player &);
+    friend ostream &operator<<(ostream &, const Player &);
 };
-
 
 #endif //PLAYER
 
 #ifndef QWINTOPLAYER
 #define QWINTOPLAYER
 
-class QwintoPlayer:public Player{
+class QwintoPlayer : public Player
+{
     QwintoScoreSheet sheet;
-public:
-    QwintoPlayer(QwintoScoreSheet&);
-    void inputBeforeRoll(RollOfDice&);
-    void inputAfterRoll(RollOfDice&);
+
+  public:
+    QwintoPlayer(QwintoScoreSheet &, string _name);
+    virtual void inputBeforeRoll(RollOfDice &) override;
+    virtual void inputAfterRoll(RollOfDice &) override;
 };
 
 #endif //QWINTOPLAYER
 
+#ifndef QWIXPLAYER
+#define QWIXPLAYER
 
-#ifndef QWIXXPLAYER
-#define QWIXXPLAYER
+class QwixPlayer : public Player
+{
+    QwixScoreSheet sheet;
 
-class QwixxPlayer:public Player{
-    QwintoScoreSheet sheet;
-public:
-    QwixxPlayer(QwintoScoreSheet&);
-    void inputBeforeRoll(RollOfDice&);
-    void inputAfterRoll(RollOfDice&);
+  public:
+    QwixPlayer(QwixScoreSheet &, string _name);
+    virtual void inputBeforeRoll(RollOfDice &) override;
+    virtual void inputAfterRoll(RollOfDice &) override;
 };
 
-#endif //QWIXXPLAYER
+#endif //QWIXPLAYER

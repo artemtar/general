@@ -3,6 +3,7 @@
 
 // #ifndef QWINTOROW
 // #define QWINTOROW
+static int DEFAULT_ELEMENT = -1;
 template <const ScoreSheet::Color C>
 QwintoRow<C>::QwintoRow()
 {
@@ -24,40 +25,44 @@ bool QwintoRow<C>::validate(int index)
     else
         return true;
 }
-
+//have to decide how to return nothing if not passing validate
 template <const ScoreSheet::Color C>
 int &QwintoRow<C>::operator[](int index)
 {
-    //bool (*check)(int);
-    //check = &validate;
-    //if (check(index))
-    return row[index];
+    //
+    if (validate(index))
+        return row[index];
     //if cannot insert return -1 for error check
-    //  else
-    //     return -1;
+    else
+        throw;//not sure if correct, check latter
+
 }
 //returns true if row is full
 template <const ScoreSheet::Color C>
 bool QwintoRow<C>::isFull()
 {
     int count = 0;
-    for(int i = 0; i < 10; ++i){
-        if(row[i] != -1)
-        ++count;
+    for (int i = 0; i < 10; ++i)
+    {
+        if (row[i] != -1)
+            ++count;
     }
-    if (count == 9) return true;
-    else return false;
+    if (count == 9)
+        return true;
+    else
+        return false;
 }
 //counts how many numbers in row
 template <const ScoreSheet::Color C>
-int QwintoRow<C>::amountNums(){
+int QwintoRow<C>::amountNums()
+{
     int count = 0;
-        for(int i = 0; i < 10; ++i){
-        if(row[i] != -1)
-        ++count;
+    for (int i = 0; i < 10; ++i)
+    {
+        if (row[i] != -1)
+            ++count;
     }
     return count;
-
 }
 // template <const ScoreSheet::Color C>
 // ostream &operator<<(ostream& out, const QwintoRow<C>& qr){
