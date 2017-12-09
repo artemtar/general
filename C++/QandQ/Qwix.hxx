@@ -1,35 +1,61 @@
-// #ifndef QWIXROW
-// #define QWIXROW
-template <class T, const ScoreSheet::Color C>
-bool QwixRow<T, C>::validate(int index)
+#include <assert.h> 
+#include <stdio.h>     
+template<ScoreSheet::Color C, 
+template<class, class = allocator<int>> class Container>
+QwixRow<C, Container>::QwixRow(){
+    for(int i = 2; i < 13; ++i){
+        row.push_back(i);
+    }    
+}
+template<ScoreSheet::Color C, 
+template<class, class = allocator<int>> class Container>
+bool QwixRow<C, Container>::validate(int index)
 {
     //out of range
-    if (index > 11 || index < 0)
+    if (index > 12 || index < 2)
         return false;
-    //has input already
-    else if (row[index] != -1)
-        return false;
+    //has input already    
+    typename Container<int>::iterator it(row.begin());
+    std::advance(it, index);
+    if(*it <= 2) return false;    
     else
-        return true;
+         return true;
 }
-template <class T, const ScoreSheet::Color C>
-int &QwixRow<T, C>::operator[](int index)
+template<ScoreSheet::Color C, 
+template<class, class = allocator<int>> class Container>
+int &QwixRow<C, Container>::operator[](int index)
 {
-    return row[index];
+    assert(index >= 0 && index < row.size());
+    typename Container<int>::iterator it(row.begin());
+    std::advance(it, index);
+    return *it;
 }
-template <class T, const ScoreSheet::Color C>
-int &QwixRow<T, C>::operator+=(RollOfDice &) {
+template<ScoreSheet::Color C, 
+template<class, class = allocator<int>> class Container>
+int &QwixRow<C, Container>::operator+=(RollOfDice &) {
+int result= 0;
+    typename Container<int>::iterator it(row.begin());
+    while(it != row.end()){
+        result += *it;
+        ++it;
+    }
+    return result;
+}
+template<ScoreSheet::Color C, 
+template<class, class = allocator<int>> class Container>
+bool QwixRow<C, Container>::checkAdd(int) {
 
 }
-template <class T, const ScoreSheet::Color C>
-bool QwixRow<T, C>::checkAdd(int) {
-
+template<ScoreSheet::Color C, 
+template<class, class = allocator<int>> class Container>
+int QwixRow<C, Container>::calcRow() {
+    typename Container<int>::iterator it(row.begin());
+   int counter = 0;
+    while(it != row.end()){
+        if(*it < 0)
+        counter += 1;
+        ++it;
+    }
+    return counter;
 }
-// template <class T, const ScoreSheet::Color C>
-// ostream &operator<< <>(ostream & out, const QwixRow<>& qr){
-//     for (auto i : qr.row){
-//         out << i;
-//     }
-//     return out;
-// }
-//#endif //QWIXROW
+

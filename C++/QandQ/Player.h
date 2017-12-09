@@ -4,20 +4,32 @@
 
 class Player
 {
-  protected:
-    string name;
-    bool status = false;
-    //ScoreSheet board;
+protected:
+  bool status = false;
+public:
+  //data
+  string name;
+  ScoreSheet* sheet;
+  //constructor
 
-  public:
-    Player(const string &_name = "");
-    inline void setStatusActive();
-    inline void setStatusInactuve();
-    virtual inline bool getStatus();
-    virtual void inputBeforeRoll(RollOfDice &) = 0;
-    virtual void inputAfterRoll(RollOfDice &) = 0;
-    friend istream &operator>>(istream &, Player &);
-    friend ostream &operator<<(ostream &, const Player &);
+  Player(ScoreSheet*, const string &_name = "");
+  Player(const Player&);
+  virtual ~Player();
+
+  virtual ScoreSheet::Color choseColor()=0;
+  //set players status
+
+  inline void setStatusActive(){status = true;}
+  inline void setStatusInactuve(){status = false;}
+  inline ScoreSheet* getScoreSheet(){return sheet;}
+  virtual int inputChecker(int, int);
+  virtual inline bool getStatus(){return status;}
+  virtual  std::vector<ScoreSheet::Color> inputBeforeRoll(RollOfDice &,int) = 0;
+  virtual void inputAfterRoll(RollOfDice*) = 0;
+  bool operator >(const Player&);
+  //bool findWinner(Player*, Player*); looking a place to implement
+  friend ostream &operator<<(ostream &, const Player &);
+  
 };
 
 #endif //PLAYER
@@ -27,12 +39,16 @@ class Player
 
 class QwintoPlayer : public Player
 {
-    QwintoScoreSheet sheet;
+public:
+  //constructors
+    QwintoPlayer(QwintoScoreSheet*, string _name);
+    QwintoPlayer(const QwintoPlayer &from);
+    ~QwintoPlayer();//for debuging
+    //virtual
+    std::vector<ScoreSheet::Color> inputBeforeRoll(RollOfDice &,int) override;
+    virtual void inputAfterRoll(RollOfDice*) override;
 
-  public:
-    QwintoPlayer(QwintoScoreSheet &, string _name);
-    virtual void inputBeforeRoll(RollOfDice &) override;
-    virtual void inputAfterRoll(RollOfDice &) override;
+     ScoreSheet::Color choseColor() override;
 };
 
 #endif //QWINTOPLAYER
@@ -42,12 +58,12 @@ class QwintoPlayer : public Player
 
 class QwixPlayer : public Player
 {
-    QwixScoreSheet sheet;
+public:
+  QwixPlayer(QwixScoreSheet*, string _name); // compile complain
+  std::vector<ScoreSheet::Color> inputBeforeRoll(RollOfDice &,int) override;
+  virtual void inputAfterRoll(RollOfDice*) override;
 
-  public:
-    QwixPlayer(QwixScoreSheet &, string _name);
-    virtual void inputBeforeRoll(RollOfDice &) override;
-    virtual void inputAfterRoll(RollOfDice &) override;
+  ScoreSheet::Color choseColor() override;
 };
 
 #endif //QWIXPLAYER
