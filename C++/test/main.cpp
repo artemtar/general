@@ -1,6 +1,6 @@
 //thisngs to check:
 //creating custom destructor, binding12, capture list12 for lambda, when dynamicly castubg what we get after assignemnt
-//cout operator, open files
+//cout operator, open files, thourough declaration
 
 #include <string>
 #include <iostream>

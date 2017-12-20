@@ -1,0 +1,4 @@
+cheeta 4
+spider 8
+ants 6
+goose 2

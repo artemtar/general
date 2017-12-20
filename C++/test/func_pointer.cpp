@@ -47,4 +47,6 @@ Test<int> gg;
 Test<string> tt();
 gg.printAll(print<int>);
 gg.printAll([](int i){cout << "lambda" << i << endl;});
+void (*ptr) (string t);
+ptr = foo;
 }
