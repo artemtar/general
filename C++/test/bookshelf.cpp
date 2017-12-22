@@ -29,7 +29,13 @@ public:
       }
       *temp.push_back(element);
   }
-  BookShelf<T,N> operator--();
+  BookShelf<T,N> operator--(){
+      auto temp = shelves.begin();
+      for(auto a = shelves.begin(); a != shelves.end(); ++a){
+          if(a->getNumberOfShelves() > temp ->getNumberOfShelves()) temp = a;
+      }
+      
+  }
   int getNumberOfShelves() const {return N;}
   bool find(const T &element) const;
 

@@ -41,10 +41,10 @@ int main(){
     map2.insert(mp.begin(),mp.end());
     map2[1] = "new value";
     map2[999] = "here is 999";
-    map<int,string>::iterator l = mp.begin();
-    map2.insert(map2.end(), *(++l));
+    map<int,string>::iterator l = mp.end();
+    map2.insert(map2.end(), p1);
     //deleting last element
-    map2.erase(--(map2.end()));
+    //map2.erase(--(map2.end()));
     print(map2.cbegin(), map2.cend());
         
 }
