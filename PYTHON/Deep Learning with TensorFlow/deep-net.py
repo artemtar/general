@@ -63,7 +63,7 @@ def train(input):
     n_epochs = 10
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        
+
         for epoch in range(n_epochs):
             epoch_cost = 0
             for _ in range (int(mnist.train.num_examples/batch_size)):
