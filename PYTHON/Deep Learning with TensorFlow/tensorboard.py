@@ -13,4 +13,4 @@ w = tf.Variable(1.0, name="weight")
 w = tf.Variable(1.0, name="weight")
 with tf.Session() as sess:
     sess.run(w.initializer)
-    print(sess.run(w)) 
+    print(sess.run(w))

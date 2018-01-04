@@ -20,9 +20,7 @@ batch_size = 100
 x = tf.placeholder('float', [None, 784])
 y = tf.placeholder('float')
 
-
 # model
-
 
 
 def deepWeb(data):
@@ -32,7 +30,6 @@ def deepWeb(data):
               'biases': tf.Variable(tf.random_normal([n_nodes_l2]))}
     layer3 = {'weights': tf.Variable(tf.random_normal([n_nodes_l2, n_nodes_l3])),
               'biases': tf.Variable(tf.random_normal([n_nodes_l3]))}
-
 
     layerOut = {'weights': tf.Variable(tf.random_normal([n_nodes_l3, n_classes])),
             'biases': tf.Variable(tf.random_normal([n_classes]))}
@@ -48,11 +45,7 @@ def deepWeb(data):
 
     outl = tf.add(tf.matmul(l3, layerOut['weights']), layerOut['biases'])
 
-
-
     return outl
-
-
 
 def train(input):
     prediction = deepWeb(input)
@@ -67,9 +60,8 @@ def train(input):
         for epoch in range(n_epochs):
             epoch_cost = 0
             for _ in range (int(mnist.train.num_examples/batch_size)):
-                #check whar is tranin next
                 epoch_data, epoch_lable = mnist.train.next_batch(batch_size)
-                #how come to current situation
+
                 _, c = sess.run([optimizer, cost], feed_dict={x: epoch_data, y: epoch_lable})
                 epoch_cost += c
 
@@ -78,8 +70,5 @@ def train(input):
             correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
             accuracy = tf.reduce_mean(tf.cast(correct, "float"))
             print("Accuracy ", accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
-
-
-
 
 train(x)
