@@ -1,2 +1,0 @@
-tensorboard --logdir /path/to/log/directory
-tensorflow.InteractiveSession()
