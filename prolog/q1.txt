@@ -1,0 +1,9 @@
+findall(X, (person(X, C),employee(X, E),company(E, CC),\+ (C = CC)), L).
+
+findall(X, (company(X, Y),city(Y, ontario)), L).
+
+findall(X, (person(X, _),not(employee(X, _))), L).
+
+findall(X, (person(X, _),employee(X, E),company(E, ottawa)), L).
+
+setof(X, Z^E^(person(X, Z),employee(X, E),company(E, ottawa)), L).
