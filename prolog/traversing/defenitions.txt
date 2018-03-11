@@ -1,0 +1,56 @@
+-findRoot
+	returns firt pool in route
+
+-western
+	finds the most western pool
+
+-angle
+	calculates angle
+
+-distance 
+	calculates distance between two points
+
+-add node
+	adds node to the graph
+
+-buildgraph
+	finds root and builds graph
+
+-findsecond
+	helper function for build graph. Looks for closest elemnt from root
+
+-removeSecond
+	removes second elemnt from list of nodes, needs for list traversal
+
+-findClosest
+	looks for closes node from graph
+
+-lookForparent
+ 	continuation of findClosest
+
+-luke
+	he has a father
+
+-iAmYourFather
+	looks for father of luke
+
+-findroute
+	finds route
+
+-trace
+	traces the graph
+
+-makeList
+	adds root for output
+
+-saveroute
+	add route to file
+
+-writenewline 
+	helper function fot saveroute. adds new line into specified file
+
+-reverselist
+	revereses list for output
+
+-getname
+	returns name of pool
