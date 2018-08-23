@@ -1,0 +1,38 @@
+ansible-playbook vm_vars_setup.yml --connection=local \
+    -e setup=True \
+    -e zen_version=0.33.8 \
+    -e inventory=artemdev \
+    -e kafka_host=artemdevzenv1 -e kafka_host_ip=10.40.1.166 \
+    -e store_host=artemdevzenv2 -e store_host_ip=10.40.1.183
+
+    ansible-playbook all_zen.yml -i inventory/artemdev -k -K -b
+
+
+curl -X POST -u client-all:client-all http://localhost:8080/api/login?grant_type=client_credentials
+
+
+ansible-playbook check_status.yml -i inventory/<YOUR_INVENTORY> -e detailed=false
+
+
+scp ./filebeat.template.json atarasov@artemdevzenv2:/home/atarasov/
+
+su -l zen -s /bin/bash
+vi /etc/rsyslog.d/50-default.conf for log enabling
+
+mvn clean install -P cision.common -Dcheckstyle.skip -Dtests.security.manager=false
+/workspace-zen/kafka-connect-elasticsearch/target
+
+sudo /usr/share/metricbeat/bin/metricbeat setup -E "setup.dashboards.directory=/usr/share/metricbeat/kibana" -c /etc/metricbeat/metricbeat.yml 
+
+jupyter notebook --port=9995 --no-browser
+
+journalctl -u elasticsearch
+
+dns lookup
+
+http://redbull.dna13.com/
+
+
+
+
+src/main/resources/application.properties +spring.profiles.active=dev
