@@ -1,7 +1,7 @@
 (*** CSI 3120 Assignment 3 ***)
-(*** YOUR NAME HERE ***)
-(*** YOUR STUDENT ID HERE ***)
-(*** OCAML VERSION USED FOR THIS ASSIGNMENT HERE ***)
+(*** Artem Tarasov ***)
+(*** 8004991 ***)
+(*** 4.04 ***)
 (* If you use the version available from the lab machines via VCL, the
    version is 4.05.0 ***)
 
@@ -77,7 +77,7 @@ let rec reduce (f:'a -> 'b -> 'b) (u:'b) (xs:'a list) : 'b =
 let rec aux (x:prop list) : form =
     match x with
         [] -> False
-        | h :: [] ->Prop h
+        | h :: [] -> Prop h
         | h :: t -> Or(Prop h, (aux t))
 
 let rec cnf (pll:prop list list) : form =
@@ -88,9 +88,9 @@ let rec cnf (pll:prop list list) : form =
             And ( (aux h), (cnf t) )
 
 
-let test1a_1 = cnf [ ["p"; "q"]; ["q"; "q"; "q"]; ["p"] ];;
+let test1a_1 = cnf [ ["p "; "q "]; ["q "; "42 "; "q "]; ["p "] ];;
 let test1a_2 = cnf [];;
-let test1a_3 = cnf [ ["x1"; "x2"]; []; ["x6"] ];;
+let test1a_3 = cnf [ ["x1 "; "x2 "]; []; ["x6 "] ];;
 
 let rec print_prop x =
     match x with
@@ -171,15 +171,7 @@ let rec eval_prop (f:form') (e:env) : bool =
         | And (a, b) -> (eval_prop a e) && (eval_prop b e)
         | Or (a, b) -> (eval_prop a e) || (eval_prop b e)
         | Imp (a, b) -> (not (eval_prop a e)) || (eval_prop b e)
-        | Not a ->
-            match a with
-                | True -> false
-                | False -> true
-                | Not b -> not (eval_prop b e)
-                | Prop a -> not (lookup2 (lookup e a))
-                | And (a, b) -> (not (eval_prop a e)) || (not (eval_prop b e))
-                | Or (a, b) -> (not (eval_prop a e)) && (not (eval_prop b e))
-                | Imp (a, b) -> (eval_prop a e) && (not (eval_prop b e))
+        | Not a -> not (eval_prop a e) 
     
 
 
@@ -190,7 +182,7 @@ let test1b (f:form') : unit =
             true -> (print_string "true")
             | false -> (print_string "false"));;
             
-print_string "Test 1b---------";;   
+print_string "Test 1c---------";;   
 print_string "\n";;
 
 test1b  (Prop "zzz");;
@@ -241,11 +233,11 @@ let test1b (f:form') : bool = eval_prop f e
 module type DICT =
   sig
     type ('key,'value) dict
-    val empty : unit -> ('key,'value) dict
-    val lookup : ('key,'value) dict -> 'key -> 'value option
-    val member : ('key,'value) dict -> 'key -> bool
-    val insert : ('key,'value) dict -> 'key -> 'value -> ('key,'value) dict
-    val remove : ('key,'value) dict -> 'key -> ('key,'value) dict
+    val empty : unit -> ('key,'value) dict(*creates new dict*)
+    val lookup : ('key,'value) dict -> 'key -> 'value option(*checks value of pair*)
+    val member : ('key,'value) dict -> 'key -> bool(*checks if key is present*)
+    val insert : ('key,'value) dict -> 'key -> 'value -> ('key,'value) dict(*insert new pair*)
+    val remove : ('key,'value) dict -> 'key -> ('key,'value) dict(*remove pair*)
   end
 
 
@@ -285,7 +277,7 @@ module ListDict: DICT  =
             | (hd_k,hd_v)::tl -> if (k = hd_k)
                                     then remove tl k
                                     else
-                                        if (k < hd_k)
+                                        if (k <= hd_k)
                                         then (hd_k,hd_v)::remove tl k
                                             else d
   end
@@ -324,19 +316,7 @@ module ListDict: DICT  =
    below provide some initial code that you can build on.
    Note: This is a simple exercise, showing how easy it is to swap
    one implementation with another. *)
-   
-type prop = string
 
-type form' =
-  | True
-  | False
-  | Prop of prop 
-  | And of form' * form'
-  | Or of form' * form'
-  | Imp of form' * form'
-  | Not of form'
-
-type env = (prop * bool) list
 
 (* return the value of proposition p in environment e *)
 type env' = (string,bool) ListDict.dict
@@ -350,19 +330,67 @@ let lookup2' (x: bool option): bool =
 
 let env0 = ListDict.empty()
 let env1 = ListDict.insert env0 "p" true
+let env2 = ListDict.insert env1 "q" false
+let env3 = ListDict.insert env2 "r" true
+let env4 = ListDict.insert env3 "s" false
 
-let rec eval_prop (f:form') (e:env') : bool =
+let rec eval_prop' (f:form') (e:env') : bool =
     match f with
         | True -> true
         | False -> false
         | Prop a -> lookup2' (lookup' e a)
-        | And (a, b) -> (eval_prop a e) && (eval_prop b e)
-        | Or (a, b) -> (eval_prop a e) || (eval_prop b e)
-        | Imp (a, b) -> (not (eval_prop a e)) || (eval_prop b e)
-        | Not a -> not (eval_prop a e) 
+        | And (a, b) -> (eval_prop' a e) && (eval_prop' b e)
+        | Or (a, b) -> (eval_prop' a e) || (eval_prop' b e)
+        | Imp (a, b) -> (not (eval_prop' a e)) || (eval_prop' b e)
+        | Not a -> not (eval_prop' a e) 
 
+let test2d (f:form') : unit = 
+    let b = (eval_prop' f env4) in
+        (match b with
+            true -> (print_string "true")
+            | false -> (print_string "false"));;
+            
+print_string "Test 2d---------";;   
+print_string "\n";;
 
+test2d  (Prop "zzz");;
+print_string "\n";;
+test2d (Or ((Prop "zzz"), (Prop "p")));;
+print_string "\n";;
+test2d True;;
+print_string "\n";;
+test2d  (Prop "q");;
+print_string "\n";;
+test2d (Not(Prop "q"));;
+print_string "\n";;
+test2d  (Imp ((Prop "q"), Not(Prop "q")));;
+print_string "\n";;
+test2d  (Imp (Not(Prop "q"), (Prop "q")));;
+print_string "\n";;
+test2d  (Not (Imp (Not(Prop "q"), (Prop "q"))));;
+print_string "\n";;
+test2d  (And (Not (Imp (Not(Prop "q"), (Prop "q"))), (Prop "s")));;
+print_string "\n";;
+test2d  (Or ((And (Not (Imp (Not(Prop "q"), (Prop "q"))), (Prop "s"))), (Prop "r")));;
+print_string "\n";;
+(*   (p /\ q) => (r \/ s)*)
+test2d  (Imp(And ((Prop "p"), (Prop "q")), Or ((Prop "r"), (Prop "s"))));;
+print_string "\n";;
 
+let a = ListDict.member env4 "p";;
+let env5 = ListDict.insert env4 "p" true (*now two keys "p" are present*)
+let env6 = ListDict.remove env5 "p";;
+
+let b = ListDict.member env6 "p";;
+
+print_string "Check remove fun: ";;
+let pr_bool a = 
+    match a with
+    | true -> print_string "Present"
+    | false -> print_string "None";;
+pr_bool a;;
+pr_bool b;;
+print_string "\n";;
 (* Problem 2e: Note that the above dictionary is a functional version.
    Design an imperative version of the DICT signature, but include
    only the empty, lookup, and insert operations.  (Omit member and
@@ -388,28 +416,81 @@ module type IMP_DICT =
 
 module ImpListDict : IMP_DICT =
   struct
-    type ('key,'value) dict = ('key * 'value) list
-    let empty (): ('key,'value) dict = []
+    type ('key,'value) dict = ('key * 'value) list ref
+              
+    let empty (): ('key,'value) dict = ref []
 
     let rec lookup (d:('key,'value) dict) (k:'key): 'value option =
-      match d with
+      match !d with
       | [] -> None
       | (hd_k,hd_v)::tl -> if hd_k=k then Some hd_v
-                           else lookup tl k
+                           else lookup (ref tl) k
 
-    let rec insert (d:('key,'value) dict) (k:'key) (v:'value): unit =
-      match d with
-      | [] -> d = [(k,v)]
+    let rec insert (d:('key,'value) dict) (k:'key) (v:'value) =
+      match !d with
+      | [] -> d := [(k,v)]
       | (hd_k,hd_v)::tl -> if (k < hd_k || k = hd_k)
-                           then d = (k,v)::(hd_k,hd_v)::tl
-                           else d = (hd_k,hd_v)::insert tl k v
+                           then d := (k,v)::(hd_k,hd_v)::tl
+                           else insert (ref tl) k v
+
   end
+  
 
 type env'' = (string,bool) ImpListDict.dict
 let lookup'' (e:env'') (p:prop) : bool option =
   ImpListDict.lookup e p
+ 
+let lookup2'' (x: bool option): bool =
+    match x with
+        | None -> false
+        | Some a -> a
 
 let e'' = ImpListDict.empty()
 let _ = ImpListDict.insert e'' "p" true
+let _ = ImpListDict.insert e'' "q" false
+let _ = ImpListDict.insert e'' "r" true
+let _ = ImpListDict.insert e'' "s" false
 
-  
+let rec eval_prop'' (f:form') (e:env'') : bool =
+    match f with
+        | True -> true
+        | False -> false
+        | Prop a -> lookup2'' (lookup'' e a)
+        | And (a, b) -> (eval_prop'' a e) && (eval_prop'' b e)
+        | Or (a, b) -> (eval_prop'' a e) || (eval_prop'' b e)
+        | Imp (a, b) -> (not (eval_prop'' a e)) || (eval_prop'' b e)
+        | Not a -> not (eval_prop'' a e) 
+
+let test2f (f:form') : unit = 
+    let b = (eval_prop'' f e'') in
+        (match b with
+            true -> (print_string "true")
+            | false -> (print_string "false"));;
+            
+print_string "Test 2f---------";;   
+print_string "\n";;
+
+test2f  (Prop "zzz");;
+print_string "\n";;
+test2f (Or ((Prop "zzz"), (Prop "p")));;
+print_string "\n";;
+test2f True;;
+print_string "\n";;
+test2f  (Prop "q");;
+print_string "\n";;
+test2f (Not(Prop "q"));;
+print_string "\n";;
+test2f  (Imp ((Prop "q"), Not(Prop "q")));;
+print_string "\n";;
+test2f  (Imp (Not(Prop "q"), (Prop "q")));;
+print_string "\n";;
+test2f  (Not (Imp (Not(Prop "q"), (Prop "q"))));;
+print_string "\n";;
+test2f  (And (Not (Imp (Not(Prop "q"), (Prop "q"))), (Prop "s")));;
+print_string "\n";;
+test2f  (Or ((Or (Not (Imp (Not(Prop "q"), (Prop "q"))), (Prop "s"))), (Prop "r")));;
+print_string "\n";;
+(*   (p /\ q) => (r \/ s)*)
+test2f  (Imp(And ((Prop "p"), (Prop "q")), Or ((Prop "r"), (Prop "s"))));;
+print_string "\n";;
+
