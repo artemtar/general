@@ -1,7 +1,7 @@
 (*** CSI 3120 Assignment 6 ***)
-(*** YOUR NAME HERE ***)
-(*** YOUR STUDENT ID HERE ***)
-(*** OCAML VERSION USED FOR THIS ASSIGNMENT HERE ***)
+(*** Artem Tarasov ***)
+(*** 8004991 ***)
+(*** 4.02 ***)
 (* If you use the version available from the lab machines via VCL, the
    version is 4.05.0 ***)
 
@@ -20,25 +20,18 @@
    Your function should have the following behaviour on the sample
    tests below. *)
 
-(*
-# sublist_starting_at_index 1 [1;2;3;4;5;6];;
-- : int list = [1; 2; 3; 4; 5; 6]
-# sublist_starting_at_index 4 [1;2;3;4;5;6];;
-- : int list = [4; 5; 6]
-# sublist_starting_at_index 6 [1;2;3;4;5;6];;
-- : int list = [6]
-# sublist_starting_at_index 7 [1;2;3;4;5;6];;
-Exception: NoSuchSublist.
-# sublist_starting_at_index 2 [true;false];;
-- : bool list = [false]
- *)
-
 exception NoSuchSublist
 let rec sublist_starting_at_index n l = 
     match l with
     | [] -> raise NoSuchSublist
     | _ :: xs -> if n = 1 then l 
                     else sublist_starting_at_index (n -1) xs
+
+assert((sublist_starting_at_index 1 [1;2;3;4;5;6]) = [1;2;3;4;5;6]);;
+assert((sublist_starting_at_index 4 [1;2;3;4;5;6]) = [4;5;6]);;
+assert((sublist_starting_at_index 6 [1;2;3;4;5;6]) = [6]);;
+(* sublist_starting_at_index 7 [1;2;3;4;5;6];; *)
+assert((sublist_starting_at_index 2 [true;false]) = [false]);;
 
 (* Problem 1(b). Now consider the definition of the recursive function
    "find" below and consider a call to the function with with 1 as the
@@ -77,14 +70,21 @@ let rec find (p:'a->bool) (n:int) (l:'a list) : int =
 
 let find_starting_at p n l = *)
 
-exception NisSmallerThanZero
-let find_starting_at (p:'a->bool) (n:int) (l:'a list) =
-    let subList = sublist_starting_at_index n l in
-        try (find p 1 subList) with
-            | NotFound -> 0
-            | NoSuchSublist -> -1
-            | NisSmallerThanZero -> -2
-            | Found n -> n
+exception NisSmallerThanZero;;
+let find_starting_at (p:'a->bool) (n:int) (l:'a list): int =
+  try let checked_n = 
+   if (n < 0) then raise NisSmallerThanZero else n in
+   try let subList = sublist_starting_at_index checked_n l in       
+            try (find p 1 subList) with
+                | NotFound -> 0
+                | Found n -> n
+                    with | NoSuchSublist -> -1
+                        with | NisSmallerThanZero -> -2
+
+assert(find_starting_at (fun x -> x = 100) 3 [1;2;3;4;5;6] = 0);;
+assert(find_starting_at (fun x -> x = 100) 7 [1;2;3;4;5;6] = -1);;
+assert(find_starting_at (fun x -> x = 100) (-5) [1;2;3;4;5;6] = -2);;
+assert(find_starting_at (fun x -> x = 6) 3 [1;2;3;4;5;6] = 4);;
 
 
 (* PROBLEM 2 *)
@@ -94,6 +94,13 @@ let find_starting_at (p:'a->bool) (n:int) (l:'a list) =
    the course notes for Chapter 8 of the Mitchell textbook). Instead
    of raising exceptions, call the appropriate continuation.  *)
 
+let rec find2 (p:'a->bool) (n:int) (l:'a list)
+           (normal_cont: int -> int) (error_cont: unit -> int) =
+  match l with
+  | [] -> error_cont ()
+  | (h::t) -> if (p h) then normal_cont n
+              else find2 p (n+1) t normal_cont error_cont
+
 (* Problem 2(b). Fill in the definition of the function
    "find_and_continue" below.  Your function should call "find2" with
    a normal continuation that multiplies its input by 2, and an error
@@ -102,7 +109,14 @@ let find_starting_at (p:'a->bool) (n:int) (l:'a list) =
 
 let find_and_continue p n l =
  *)
-                                                      
+
+let find_and_continue p n l =
+    find2 p n l
+        (fun x -> 2 * x)
+        (fun () -> (print_string "Not Found"; 0))
+
+assert(find_and_continue (fun x -> x = 5) 1 [1;2;4;5;6] = 8);;
+assert(find_and_continue (fun x -> x = 9) 1 [1;2;4;5;6] = 0);;
 
 (* PROBLEM 3 *)
 (* Below is the OCaml code used for Force and Delay as described in
@@ -126,6 +140,12 @@ let force (d:'a delay ref) : 'a =
    version, the third argument will have type 'a delay ref list, and
    your function must use "force" to evaluate each element. *)
 
+let rec find3 (p:'a->bool) (n:int) (l: 'a delay ref list) : int =
+  match l with
+  | [] -> raise NotFound
+  | h::t -> if (p (force h)) then n 
+              else find3 p (n+1) t
+
 (* Problem 3(b) Give an example input list with at least 3 elements by
    filling in the missing parts of the definition of "delay_list"
    below.  Each element must be a reference to an unevaluated
@@ -137,7 +157,14 @@ let delay_list = [ref (UN (fun () -> *** Insert your code here. ***]
 let test3b = find3 (fun x -> x = 6) 1 delay_list
 let _ = delay_list
  *)
+let a = ref (UN (fun() -> 1 + 1))
+let b = ref (UN (fun() -> 2 + 1))
+let c = ref (UN (fun() -> 5 + 1))
+let d = ref (UN (fun() -> 100 + 1))
+let delay_list = [a;b;c;d]
 
+let test3b = find3 (fun x -> x = 6) 1 delay_list
+let _ = delay_list
 
 (* PROBLEM 4 *)
 (* Consider the data type below for expressions given by the simple
@@ -156,13 +183,13 @@ type exp =
    - An expression "c_exp" representing the number 5
    - An expression "d_exp" representing the sum of "a" and "b"
    - An expression "e_exp" representing the sum of "d" and "c"
-
-let a_exp : exp = 
-let b_exp : exp = 
-let c_exp : exp = 
-let d_exp : exp = 
-let e_exp : exp = 
 *)
+
+let a_exp : exp = Number 3
+let b_exp : exp = Number 0
+let c_exp : exp = Number 5
+let d_exp : exp = Sum (a_exp, b_exp)
+let e_exp : exp = Sum (c_exp, d_exp)
 
 (* Problem 4(b).  Some of the code for the class hierarchy from the
    lab is given below.  It includes the parent class "expression", and
@@ -201,5 +228,24 @@ end
    part 4(a) and then sending the "value" message to the result of this
    translation.
 
-let exp2expression (e:exp) : expression =
  *)
+
+let rec exp2expression (e:exp) : expression =
+    match e with
+    | Number n -> new number_exp n
+    | Sum (a, b) -> 
+        let e1 = exp2expression a in
+        let e2 = exp2expression b in
+        new sum_exp e1 e2
+
+let a_res = exp2expression a_exp
+let b_res = exp2expression b_exp
+let c_res= exp2expression c_exp
+let d_res = exp2expression d_exp
+let e_res = exp2expression e_exp
+
+assert(a_res#value = 3);;
+assert(b_res#value = 0);;
+assert(c_res#value = 5);;
+assert(d_res#value = 3);;
+assert(e_res#value = 8);;
