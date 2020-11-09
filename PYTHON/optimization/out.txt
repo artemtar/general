@@ -1,0 +1,59 @@
+Number of variables = 7
+Number of constraints = 3
+Solution:
+x1: 4.0
+x2: 0.9999999999999994
+x3: 0.0
+x4: 0.0
+x5: 0.0
+x6: 0.0
+x7: 1.0
+Optimal objective value = 21.0
+Number of variables = 6
+Number of constraints = 3
+Solution:
+x1: 0.0
+x2: 4.0
+x3: 0.0
+x4: 0.0
+x5: 4.0
+x6: 3.0
+Optimal objective value = 8.0
+Number of variables = 6
+Number of constraints = 3
+Solution:
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+E1108 20:42:39.784047 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+x1: 0.0
+E1108 20:42:39.784091 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+E1108 20:42:39.784097 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+x2: 0.0
+E1108 20:42:39.784107 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+E1108 20:42:39.784113 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+x3: 0.0
+E1108 20:42:39.784122 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+E1108 20:42:39.784128 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+x4: 0.0
+E1108 20:42:39.784138 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+E1108 20:42:39.784144 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+x5: 0.0
+E1108 20:42:39.784153 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+E1108 20:42:39.784159 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+x6: 0.0
+E1108 20:42:39.784168 100783 linear_solver.cc:1663] No solution exists. MPSolverInterface::result_status_ = MPSOLVER_INFEASIBLE
+Optimal objective value = 0.0
+Number of variables = 3
+Number of constraints = 3
+Solution:
+x1: 0.1702127659574466
+x2: 0.7234042553191489
+x3: 0.7127659574468084
+Optimal objective value = 1.6276595744680848
+Number of variables = 4
+Number of constraints = 3
+Solution:
+x1: 4.999999999999998
+x2: 0.0
+x3: 6.750000000000001
+x4: 2.2500000000000004
+Optimal objective value = -8.249999999999993
