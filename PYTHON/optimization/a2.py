@@ -1,9 +1,9 @@
 from ortools.linear_solver import pywraplp
 
-def lp(objective, constrains, num_vars, maximize=True):
+def lp(objective, constrains, maximize=True):
     solver = pywraplp.Solver.CreateSolver('GLOP')
     get_vars = lambda x: [solver.NumVar(0, solver.infinity(), f'x{bound}') for bound in range(1,x + 1)]
-    vars = get_vars(num_vars)
+    vars = get_vars(len(objective))
     for c in constrains:
         constraint = solver.Constraint(c[-1], c[-1])
         for v in range(len(vars)):
@@ -32,8 +32,7 @@ lp(
         [4,1,3,3,1,0,0,17],
         [1,0,1,1,0,1,0,4],
         [2,1,2,3,0,0,1,10]
-    ],
-    num_vars=7
+    ]
 )
 
 lp(
@@ -42,8 +41,7 @@ lp(
         [1,1,2,1,0,0,4],
         [1,0,3,0,1,0,4],
         [1,1,3,0,0,1,7]
-    ],
-    num_vars=6
+    ]
 )
 
 lp(
@@ -52,8 +50,7 @@ lp(
         [2,-2,1,1,0,0,10],
         [-3,-2,2,0,1,0,9],
         [1,-4,1,0,0,1,10]
-    ],
-    num_vars=6
+    ]
 )
 
 lp(
@@ -62,8 +59,7 @@ lp(
         [-1,3,0,2],
         [7,-5,2,-1],
         [1,11,-10,1]
-    ],
-    num_vars=3
+    ]
 )
 
 lp(
@@ -72,6 +68,5 @@ lp(
         [1,1,1,1,14],
         [-2,-1,-1,3,-10],
         [0,16,1,1, 9]
-    ],
-    num_vars=4
+    ]
 )
