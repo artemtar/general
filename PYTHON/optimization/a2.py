@@ -2,7 +2,7 @@ from ortools.linear_solver import pywraplp
 
 def lp(objective, constrains, maximize=True):
     solver = pywraplp.Solver.CreateSolver('GLOP')
-    get_vars = lambda x: [solver.NumVar(0, solver.infinity(), f'x{bound}') for bound in range(1,x + 1)]
+    get_vars = lambda x: [solver.NumVar(0, solver.infinity(), f'x{var}') for var in range(1,x + 1)]
     vars = get_vars(len(objective))
     for c in constrains:
         constraint = solver.Constraint(c[-1], c[-1])
